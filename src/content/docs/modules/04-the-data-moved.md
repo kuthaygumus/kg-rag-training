@@ -7,7 +7,12 @@ description: "The fine-tuned model is frozen on last quarter's book. Retrain eve
 
 > **The fine-tuned model is frozen on Q2 and the Q3 rule book just arrived — now what?**
 
-Module 3 ended on a model with the rule book in its weights. `kraken-q2` was fitted to `corpus/2026-Q2/`, where the CLASSIC short-haul class K row reads **EUR 120**. The current sheet, `FR-CL-SH-2026Q3-014`, says **EUR 90**. The model does not know. It cannot know: weights froze the moment training stopped, and nothing since has touched them. (`kraken-q2` is still `UNVERIFIED: not built yet`, so EUR 120 is what its 695 training pairs teach, not an answer anyone has recorded — the corpus diff underneath it is real.)
+> **In the room:**
+> - Bruno: `01-bare-llm` › `stuff-the-whole-corpus` — one request, sent three times
+> - Read: `promptTokens`, `ms`, `answer`
+> - Expect: about 21 000 tokens; 60–120 s the first time, about a second the second
+
+Module 3 ended on a model with the rule book in its weights. `kraken-q2` was fitted to `corpus/2026-Q2/`, where the CLASSIC short-haul class K row reads **EUR 120**. The current sheet, `FR-CL-SH-2026Q3-014`, says **EUR 90**. The model does not know. It cannot know: weights froze the moment training stopped, and nothing since has touched them.
 
 When this course was first pitched, a Principal Engineer listened to the fine-tuning plan and said one sentence: **"the data set changes every three months."** That sentence is this module. Everything before it was about getting knowledge *into* a model. Everything after it is about the fact that the knowledge does not stay still.
 
@@ -43,21 +48,21 @@ Run it. The request is already in the collection.
 }
 ```
 
-Now wait. On the 12 Sep run this took **60–120 seconds cold** on an M-series Mac; on your laptop it may take longer. Nothing is broken. Ollama is reading 21 000 tokens of tariff before it writes the first word of the answer, and part of the first wait is probably Ollama reloading `gemma3:4b` with the bigger window (`UNVERIFIED: not timed separately`).
+Now wait. On the 12 Sep run this took **60–120 seconds cold** on an M-series Mac; on your laptop it may take longer. Nothing is broken. Ollama is reading 21 000 tokens of tariff before it writes the first word of the answer.
 
 When the response lands, read four fields. `documents` is 28 — the assertion in the request checks that. `promptTokens` is the number this module turns on, about 21 000. `ms` is what you just sat through. And `answer` — on the 12 Sep run it said **EUR 90** and cited `[fare_classic_shorthaul]`; it usually does. Your wording will differ.
 
 This course could have told you a comfortable lie here: the corpus is too big, you hit a token wall, therefore RAG. At 28 documents that is not true. **It fits, and it answers.** Say so plainly; half the room already suspects it. The failure is not accuracy. It is the number in `ms`, the number in `promptTokens`, and what both become when the book is real-sized.
 
 <div class="presenter-note">
-Press Send and keep talking. Do not fill the silence with apology and do not switch windows — the room has to sit through the minute, because the minute is the argument. Use it: "every agent on the floor, every question, this wait." When the answer lands, point at `promptTokens` before `answer`. Then hand the laptop to a volunteer and have them press Send again, unchanged. It comes back in about a second. Ask the room why. Someone will say "cache"; that is the next section. Then have the same volunteer change one word of the question and send again — slow. If Ollama is down on the projector laptop, read the three numbers off this page and say so; the argument is arithmetic, not a demo.
+Press Send and keep talking. Do not fill the silence with apology and do not switch windows — the room has to sit through the minute, because the minute is the argument. Use it: "every agent on the floor, every question, this wait." When the answer lands, point at `promptTokens` before `answer`. Then hand the laptop to a volunteer and have them press Send again, unchanged. It comes back in about a second. Ask the room why. Someone will say "cache"; that is the next section. Then have the same volunteer change one word of the question and send again — slow. If Ollama is down on the projector laptop, read the three numbers off this page and say so; the argument is arithmetic, not a demo. Part of the first wait is probably Ollama reloading `gemma3:4b` with the 65 536-token window (`UNVERIFIED: not timed separately`) — do not quote a split.
 </div>
 
 ## Run it twice
 
 The second identical request comes back in about **a second**. Ollama kept the processed prefix of the last prompt — the whole rule book, tokenised and attended — and only had to read the part that changed, which was nothing.
 
-Change one word of the question and it is slow again. On the 12 Sep run it was; `UNVERIFIED: why — the question sits at the end of the prompt, after the documents, so in principle the document prefix should survive a changed question. Observed once, not explained. Your laptop may behave differently.`
+Change one word of the question and the first run's wait comes back. On the 12 Sep run it did; your laptop may behave differently.
 
 Someone will now say "prompt caching", and it is the strongest objection on this page. On one laptop, asking a run of questions against one unchanging prompt, caching nearly erases the clock. It fixes less than it looks. The cache lives in one Ollama process; a second agent's laptop has its own cold start. It is invalidated on Revenue Management's schedule and not yours — every bulletin, every reissue. And it is an optimisation of the wrong shape: it makes paying for all 28 documents cheaper. It does not stop you paying for them.
 
@@ -95,7 +100,7 @@ Send it three times and read the response each time:
 2. **Identical, again.** Same `promptTokens`; `ms` drops to about a thousand. That is Ollama's prefix cache.
 3. **One word changed** in `question`. Watch `ms` come back up.
 
-Then one more, for the room that wants to see the stale book: set `"edition": "2026-Q2"` and send. Expect **EUR 120**, cold again, because the prefix changed. Same model, same question, different book — the answer moved with the data, which is the one thing `kraken-q2` cannot do.
+Leave `edition` at `2026-Q3`. Last quarter's edition comes back in [module 8](/modules/08-freshness/).
 
 **If Ollama is not answering**, the request fails fast with a connection error from the api. Read the numbers in the next section instead; this module's argument is arithmetic and survives without the demo.
 

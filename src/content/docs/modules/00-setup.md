@@ -1,9 +1,9 @@
 ---
-title: "0. Setup — Before You Arrive"
-description: "Install Ollama, Podman Desktop and Bruno, pull two models, build two containers, run one health request — under an hour the evening before, nearly all of it downloading. And the rule that makes every command on this site work: the repository root is where you stand."
+title: "Before we start"
+description: "Three programs, two models, one git clone. It ends with a single request in Bruno that says ready."
 ---
 
-There is no gate question for this module. This is the pre-work, done the evening before, on a network you are not sharing with twenty other people. Under an hour, nearly all of it downloading. Nothing on this page needs Python, a notebook or an account anywhere.
+Three programs, two models, one `git clone`. At the end, a single request in Bruno says `ready`.
 
 ## Where every command on this site goes
 
@@ -37,7 +37,7 @@ ollama --version
 
 **Windows, without administrator rights.** `OllamaSetup.exe` is a per-user installer: binaries under `%LOCALAPPDATA%\Programs\Ollama`, no elevation, server starts with your session.
 
-`UNVERIFIED: the per-user install path is how the installer is built, not something confirmed on a managed Windows laptop.` If it asks for administrator credentials, stop — send a message the evening before and you will be paired with someone whose machine is green, rather than arguing with IT at 09:00 on the day.
+*We have not yet confirmed the per-user install on a managed Amadeus Windows laptop.* If it asks for administrator credentials, stop — send a message the evening before and you will be paired with someone whose machine is green, rather than arguing with IT at 09:00 on the day.
 
 It adds Ollama to your user PATH, and a terminal that was already open does not pick that up. If `ollama --version` says the command is not recognised, close that window and open a new one before concluding anything.
 
@@ -45,7 +45,7 @@ It adds Ollama to your user PATH, and a terminal that was already open does not 
 
 Download from [podman-desktop.io](https://podman-desktop.io). Launch it once; the first-run screen offers to set up Podman itself — accept. On macOS and Windows the containers run inside a small Linux VM that this step creates, and creating it is a download of its own, which is why it belongs at home.
 
-`UNVERIFIED: whether Podman Desktop installs without administrator rights on a managed Windows laptop. On Windows it needs WSL 2, and enabling WSL 2 is commonly an elevated step. This is the #1 risk of the day. If it blocks you, say so the evening before — you will pair.`
+*Not yet confirmed on a managed Amadeus Windows laptop: whether Podman Desktop installs without administrator rights.* On Windows it needs WSL 2, and enabling WSL 2 is often an elevated step. If it blocks you, say so before the day — you will pair with someone whose machine is green.
 
 Already have Docker Desktop and a working `docker compose`? It works too, with one change, noted under [Clone and build at home](#clone-and-build-at-home).
 
@@ -62,7 +62,7 @@ ollama pull gemma3:4b     # answers questions      (3.3 GB)
 ollama pull bge-m3        # turns text into vectors (1.2 GB)
 ```
 
-About 4.5 GB together. Pull both. Pulling a model in the room on the day is the single thing this page exists to prevent: measured on a corp laptop, the office link gives `registry.ollama.ai` 3.7–7.8 MB/s on a single stream. Twenty laptops starting the same 4.5 GB pull at 09:00 are not each getting the link, they are dividing it. If your home connection gives up, weights are ordinary files and can be copied from a machine that has them — see [Moving models between machines](#moving-models-between-machines).
+About 4.5 GB together. Pull both. Pulling a model in the room on the day is the single thing this page exists to prevent: measured on a corp laptop, the office link gives `registry.ollama.ai` 3.7–7.8 MB/s on a single stream. Twenty laptops starting the same 4.5 GB pull at 09:00 are not each getting the link, they are dividing it. If your home connection gives up, the model files (the *weights* — module 2 shows what they are) are ordinary files and can be copied from a machine that has them — see [Moving models between machines](#moving-models-between-machines).
 
 **Do not substitute a model.** Every number on this site was produced with `gemma3:4b` answering and `bge-m3` embedding; swap either and the answers on your screen stop matching the answers on the projector, and you will spend the day debugging a difference that is not a bug.
 
@@ -122,11 +122,21 @@ No body. Press the arrow.
 | `chroma` | `unreachable at http://chroma:8000 — is the chroma container running?` | Look at Podman Desktop: if `chroma` is not green, `podman compose down` then `podman compose up` at the repo root. |
 | Bruno: connection refused | — | The api is not up at all. Is `podman compose up` running in the terminal? Is the environment `local` selected? |
 
-**Windows and `OLLAMA_HOST`.** `UNVERIFIED: on Windows, Ollama may bind only 127.0.0.1, which the Podman VM cannot reach — ollama list works in your terminal while the container reports unreachable. The documented fix is to set the user environment variable OLLAMA_HOST=0.0.0.0 (Settings → System → Environment variables, user scope, no admin needed), then quit and restart Ollama from the tray. Not yet confirmed on a managed Windows laptop.` If you hit this at home, fix it at home; if you hit it at 09:10, you pair.
+**Windows and `OLLAMA_HOST`.** On Windows, Ollama may listen only on `127.0.0.1`, which the Podman VM cannot reach — `ollama list` works in your terminal while the container reports `unreachable`. The documented fix: set the user environment variable `OLLAMA_HOST=0.0.0.0` (Settings → System → Environment variables, user scope, no admin needed), then quit and restart Ollama from the tray. *Not yet confirmed on a managed Amadeus Windows laptop.* If you hit this at home, fix it at home; if you hit it at 09:10, you pair.
+
+## On the morning of the training
+
+**Terminal (repo root of `amadeus-rag-lab`):**
+
+```bash
+podman compose up          # no --build: the images are already on your machine
+```
+
+Then **Bruno — `00-health` › `health`** once more. If you ran the lab before, `collections` may already list a few names — that is fine; module 5 rebuilds what it needs.
 
 ## Moving models between machines
 
-Weights are ordinary files on disk, and they are portable — the fallback for anyone whose home download gave up. Both models together are about 4.5 GB, which is a USB stick, not a download.
+Model files are ordinary files on disk, and they are portable — the fallback for anyone whose home download gave up. Both models together are about 4.5 GB, which is a USB stick, not a download.
 
 | OS | Path |
 |---|---|
@@ -153,10 +163,10 @@ The container images are portable in the same way — `podman save` on a green m
 
 Ollama is a local model server, not a framework. You give it a model name, it downloads a quantised GGUF copy of the weights, and it listens on `http://localhost:11434` with a small HTTP API — which is why the api container can treat it exactly like any other service, and why it does not need to be a container itself. Quantisation stores each weight in roughly 4 bits instead of 16, at a small loss of quality: invisible on the tasks in this course, not invisible on a long chain of reasoning, which is one reason the day never asks a 4B model to do anything clever in a single call.
 
-Someone will ask "why not an API?" in the first ten minutes. The answer is not "local is better". It is that **a pinned local model gives the same answer in September and in October, so when an answer moves we know what moved it** — and nobody needs an account, a key or an approval to sit down. Everything on this site runs on the laptop in front of you, and that is a measurement decision, not an ideology.
+You may be wondering why we are not simply calling an API. Not because "local is better" — because **a pinned local model gives the same answer in September and in October, so when an answer moves we know what moved it** — and nobody needs an account, a key or an approval to sit down. Everything on this site runs on the laptop in front of you, and that is a measurement decision, not an ideology.
 
 The two containers are the other half of the same decision. ChromaDB is pinned to `1.5.9` and the api is built from a lockfile; the compose file is the whole deployment, and `podman compose down -v` is the whole reset. Module 6 opens that box.
 
 ## Exit line
 
-> Everything is installed and nothing is connected to anything yet. Tomorrow starts with the model completely on its own — **Bruno — `01-bare-llm` › `ask-about-kraken`**, one question about a Kraken Air fare rule it has never seen.
+> Everything is installed and nothing is connected to anything yet. The day starts with the model completely on its own — **Bruno — `01-bare-llm` › `ask-about-kraken`**, one question about a Kraken Air fare rule it has never seen.

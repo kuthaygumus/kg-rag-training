@@ -5,7 +5,7 @@ template: splash
 hero:
   tagline: Her kavram, yerini bir öncekini kırarak hak eder.
   actions:
-    - text: Kurulum — buradan başla
+    - text: Başlamadan önce — buradan başla
       link: /tr/modules/00-setup/
       icon: right-arrow
     - text: Lab reposu
@@ -17,16 +17,16 @@ hero:
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
 > **Kraken Air (XX) ve Wyvern Overseas Airways (YY) kurgusal havayollarıdır**; kodları da gerçek
-> hiçbir taşıyıcıya ait değil. Corpus'taki her doküman, ücret, ceza, uçuş numarası ve kural
-> sentetiktir, öğretmek için yazılmıştır. Bu repoda hiçbir Amadeus sistemi, müşterisi veya
-> production verisi kullanılmamıştır. Sitenin tam metni budur; diğer her sayfa kısa hatırlatmayı
-> footer'ında taşır.
+> hiçbir taşıyıcıya ait değil. Bu eğitimde modelin okuyacağı her doküman — ücret kuralları, bültenler,
+> çağrı merkezi metinleri — sentetiktir, öğretmek için yazılmıştır. Bu repoda hiçbir Amadeus sistemi,
+> müşterisi veya production verisi kullanılmamıştır. Sitenin tam metni budur; diğer her sayfa kısa
+> hatırlatmayı footer'ında taşır.
 
-## Kurulacak üç şey — günden önce
+## Eğitime başlamadan kurulacak 3 şey
 
 Pratik kısmın tamamı klonladığın küçük bir repo, başlattığın iki container ve tıklayarak
-ilerlediğin bir istek koleksiyonundan ibaret. Bu üçünü evde, yirmi kişiyle paylaşmadığın bir
-bağlantıda kur; oradayken iki modeli de indir:
+ilerlediğin bir istek koleksiyonundan ibaret. Bu üçünü kur ve iki modeli indir — mümkünse
+önceden: modeller 4.5 GB, ofis ağında sabah başlarsan 09:10'a yetişmez.
 
 | | Neden | Nereden |
 |---|---|---|
@@ -34,25 +34,25 @@ bağlantıda kur; oradayken iki modeli de indir:
 | **Podman Desktop** | ChromaDB'yi ve lab'ın API'sini container olarak çalıştırır | [podman-desktop.io](https://podman-desktop.io) |
 | **Bruno** | günün handout'u olan istek koleksiyonu | [usebruno.com/downloads](https://www.usebruno.com/downloads) |
 
-API key yok, bulut hesabı yok, giriş yok, Python yok. [Kurulum](/tr/modules/00-setup/) her adımı
-yürütür ve `ready` diyen tek bir istekle biter.
+API key yok, bulut hesabı yok, giriş yok, Python yok. [Başlamadan önce](/tr/modules/00-setup/)
+her adımı yürütür ve `ready` diyen tek bir istekle biter.
 
 ## Bu eğitimin kurulu olduğu kural
 
 Hiçbir kavram, **onu gerektiren başarısızlık görülmeden** tanıtılmaz. Her modül bir öncekinin
-duvarında açılır; modül 2 tek ilan edilmiş istisna ve bunu kendi sayfasında söylüyor — sonraki üç
-gate'in harcadığı tek bir cümleyi kazanmak için var.
+duvarında açılır; modül 2 tek ilan edilmiş istisna ve bunu kendi sayfasında söylüyor.
 
-**çıplak LLM** → *havayolumuz hakkında kendinden emin, kaynaksız cevap veriyor — ve yanlış* →
-**ağırlık nedir** → *ağırlık, eğitim verisinin donmuş bir fotoğrafıdır* → **fine-tuning** →
-*fotoğrafı kendi verimizle yeniden çekebiliriz — ama geçen çeyreğin fotoğrafı ve kaynak
-gösteremiyor* → **veri değişti** → *kural kitabının tamamını prompt'a koy: sığıyor, ve her
-soruda bütün kitabın bedelini token ve saniye olarak ödüyorsun* → **basit RAG** → *doğru parçayı
-ver: cevap artık temellendirilmiş — şimdi gerçekte ne getirildiğine bak* → **ChromaDB** →
-*chunk'lar görünür oldu ve rakamı taşıyan chunk başlığını kaybetmiş* → **chunking ve gürültü** →
-*dokümanın kendi yapısından kes: aynı model, aynı store, doğru cevap* → **güncellik** → *geçen
-çeyreğin ve bu çeyreğin edisyonunu yeniden ingest et: yeniden eğitim olmadan 120 → 90* →
-**kapanış**.
+| Aşama | Ne kırıldı |
+|---|---|
+| **1 · Yalın LLM** | Havayolumuz hakkında kendinden emin, kaynaksız cevap veriyor — ve yanlış |
+| **2 · Ağırlık nedir** | Ağırlık, eğitim verisinin donmuş bir fotoğrafıdır |
+| **3 · Fine-tuning** | Fotoğrafı kendi verimizle çekebiliriz — ama geçen çeyreğin fotoğrafı ve kaynak gösteremiyor |
+| **4 · Veri değişti** | Kural kitabının tamamını prompt'a koy: sığıyor, ve her soruda bütün kitabın bedelini ödüyorsun |
+| **5 · Basit RAG** | Doğru parçayı ver: cevap temellendirilmiş — şimdi gerçekte ne getirildiğine bak |
+| **6 · ChromaDB** | Chunk'lar görünür oldu ve rakamı taşıyan chunk başlığını kaybetmiş |
+| **7 · Chunking ve gürültü** | Dokümanın kendi yapısından kes: aynı model, aynı store, doğru cevap |
+| **8 · Güncellik** | Geçen çeyreğin ve bu çeyreğin edisyonunu yeniden ingest et: yeniden eğitim olmadan 120 → 90 |
+| **9 · Kapanış** | Zinciri geriye sar |
 
 <CardGrid>
   <Card title="Yerel çalışır" icon="laptop">
@@ -75,20 +75,29 @@ ver: cevap artık temellendirilmiş — şimdi gerçekte ne getirildiğine bak* 
 
 ## Gün nasıl işliyor
 
-Teori modülleri — sinir ağı nasıl öğrenir, model nasıl eğitilir ve fine-tune edilir — eğitmen
-tarafından projektörden sürülür; bunlar için laptopunda çalıştıracağın bir şey yok. Pratik
-modüller seni **Bruno**'ya gönderir: sayfa bir klasör ve bir istek adı verir, sen çalıştırırsın,
-cevap dersin kendisidir. Her isteğin *Docs* sekmesinde gate sorusu ve cevapta neye bakacağın yazar.
+- **Teori** (modül 2 ve 3) — eğitmen projektörden anlatır; laptopunda bir şey çalıştırmazsın.
+- **Pratik** — sayfa **Bruno**'da bir klasör ve bir istek adı verir; gönderirsin, cevap dersin kendisi. Her isteğin *Docs* sekmesinde neye bakacağın yazar.
+- **Üç yüzey** — Bruno · `amadeus-rag-lab` kökünde bir terminal · Podman Desktop. Her komut bloğu hangisine ait olduğunu söyler.
 
-Tam olarak üç yüzey var ve bu sitedeki her komut bloğu hangisine ait olduğunu söyler: **Bruno**
-(`amadeus-rag-lab` koleksiyonunda bir klasör ve bir istek), **`amadeus-rag-lab` repo kökünde bir
-terminal** (`ollama …`, `podman …` ve `curl …` için) ve **Podman Desktop** (iki container'ı
-görmek için). Retrieval kalite rakamları — yirmi altın soru üzerinde `hit@1`, `recall@5`, `MRR` —
-eğitmen tarafından `npm run eval` ile ölçülür ve önemli olduğu sayfalarda alıntılanır; salonda
-kimse benchmark çalıştırmaz.
+Retrieval kalite rakamları (`hit@1`, `recall@5`) eğitmen tarafından ölçülür ve gerektiği sayfada alıntılanır; salonda kimse benchmark çalıştırmaz.
 
-Gün 7 Ekim 2026, 09:00–15:00. Kurulum ön çalışmadır, bir gece önce evde yapılır.
+| Saat | Modül | Sen |
+|---|---|---|
+| 09:00 | Açılış · kurulum kontrolü | Bruno `00-health` |
+| 09:20 | 1 · Yalın LLM | Bruno |
+| 09:32 | 2 · Sinir ağı | izle |
+| 09:52 | 3 · Fine-tuning | izle |
+| 10:17 | *Mola* | |
+| 10:32 | 4 · Veri değişti | Bruno |
+| 10:47 | 5 · Basit RAG | Bruno |
+| 11:27 | 6 · ChromaDB | Podman Desktop · terminal · Bruno |
+| 11:47 | 7 · Chunking ve gürültü | Bruno |
+| 12:17 | *Öğle* | |
+| 13:17 | 8 · Güncellik | Bruno |
+| 13:42 | Serbest keşif | Bruno, kendi soruların |
+| 14:12 | Günün bıraktıkları | izle |
+| 14:35 | 9 · Kapanış | |
 
-[Kurulum](/tr/modules/00-setup/)'dan başla; günün kullandığı her terim
+[Başlamadan önce](/tr/modules/00-setup/)'den başla; günün kullandığı her terim
 [sözlük](/tr/reference/glossary/)'te bir kez tanımlı, günün bilinçli olarak dışarıda bıraktıkları
 — hybrid retrieval, reranking, agentic RAG — [Daha ileri](/tr/reference/going-further/)'de.

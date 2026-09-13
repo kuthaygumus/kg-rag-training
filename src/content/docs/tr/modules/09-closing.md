@@ -36,14 +36,13 @@ soğukta 60–120 s. Her çeyrek yeniden eğitemezsin, her soruda bütün kitab�
 o zaman modele doğru parçayı ver. Retrieval burada, bir maliyet tasarrufu olarak doğdu.
 
 **3. Fine-tuning** — Q2'yi kendi weight'lerinden cevaplayan bir model çalışır — veri değişene
-kadar. `UNVERIFIED: kraken-q2 kurulmadı; bayat cevap bir tahmin, bu salonun izlediği bir şey
-değil.` Hatanın biçimi için modele gerek yok: weight'ler bir satırın değiştiğini bilemez ve
+kadar. Hatanın biçimi için modele gerek yok: weight'ler bir satırın değiştiğini bilemez ve
 öğrendikleri satırı kaynak gösteremez.
 
 **2. Sinir ağı nasıl öğrenir** — weight'ler, training verisinin donmuş bir fotoğrafı. Bu da tek
 makul soruyu doğurdu: fotoğrafı kendi verimizle yeniden çekebilir miyiz?
 
-**1. Çıplak LLM** — verimizi bilmiyordu ve bilmediğini de bilmiyordu. CLASSIC K iptal cezası
+**1. Yalın LLM** — verimizi bilmiyordu ve bilmediğini de bilmiyordu. CLASSIC K iptal cezası
 sorulduğunda kendinden emin bir tutar uydurdu — 12 Eylül koşusunda "€50" sınıfından bir rakam.
 Öyleyse: bir modelde bilgi *nerede*?
 
@@ -84,15 +83,16 @@ hit@1 / recall@5 / MRR, 12 Eylül 2026'da tek koşu (sayılar başka makinelerde
 | structure-1500 + strip | 0.650 | 0.850 | 0.766 |
 
 Dürüst oku: structure-aware chunking doğru **dokümanı** daha sık bulmuyor. **Chunk'ı** düzeltiyor —
-K satırını header'ıyla birlikte — "bilmiyorum"u EUR 90'a çeviren şey bu. Overlap her metrikte
-kaybediyor. Doküman seviyesindeki tek bir sayının neden yetmediği ve ne getirildiğini hâlâ neden
+K satırını header'ıyla birlikte: fixed-280 ile model ya "bilmiyorum" dedi ya yanlış sütunu okudu;
+structure ile EUR 90. Overlap her metrikte kaybediyor. Doküman seviyesindeki tek bir sayının neden yetmediği ve ne getirildiğini hâlâ neden
 okuduğun da bu.
 
 </div>
 
 **Deployment birimi yeniden ingest'tir, yeniden training değil.** Q3 Q2'nin yerine geçtiğinde
 pipeline değişmiyor, model değişmiyor, prompt değişmiyor. Yeni edisyonun tek bir ingest'i, içinde ne
-olduğunu söyleyen tek bir collection adı — `kraken-2026-Q3-structure-1500` — ve bayat cevap gitti.
+olduğunu söyleyen tek bir collection adı — `kraken-2026-Q3-structure-1500-strip` — ve bayat cevap
+gitti.
 Bu, planlayabildiğin, geri alabildiğin, diff'leyebildiğin bir deploy. Fine-tune bunların hiçbiri
 değil.
 

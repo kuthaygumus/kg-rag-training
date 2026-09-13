@@ -1,5 +1,5 @@
 ---
-title: "1. Çıplak LLM Duvarı"
+title: "1. Yalın LLM Duvarı"
 description: "Tek başına modele tek bir istek: Kraken Air ceza sorusuna kendinden emin, spesifik, kaynaksız — ve yanlış — cevap veriyor. Sonra soruyu değiştiriyorsun, yine cevap veriyor."
 ---
 
@@ -11,11 +11,40 @@ description: "Tek başına modele tek bir istek: Kraken Air ceza sorusuna kendin
 Kimse tıklamadan önce soruyu ekrana yansıt ve salonu bağla: 4B'lik bir model Kraken Air'in iptal cezası sorusuna cevap verir mi, yoksa reddeder mi? El kaldırt, sesli say, iki rakamı tahtaya yaz. Çoğu salon ikiye bölünür. İstek meseleyi tek tıkla kapatıyor — cevap veriyor, üstelik bir rakamla — ve modülü taşıyan şey "reddeder" kampının şaşkınlığı. Bunun için iki dakika, fazlası değil.
 </div>
 
-Laptopta bir model. Retrieval yok, doküman yok, sadece ağırlıklar. Bütün günün üzerine kurulu olduğu tek soruyu soruyoruz — bir Kraken Air çağrı merkezi temsilcisinin vardiyada on kez aldığı soruyu:
+> **Salonda:** Bruno — `01-bare-llm` › `ask-about-kraken`. `answer` alanını oku. Beklenen: kendinden emin, spesifik, kaynaksız bir tutar — ve EUR 90 değil.
+
+## Elimizdeki veri
+
+Kraken Air kurgusal bir havayolu; kural kitabı da klonladığın reponun `corpus/` klasörü: **28 markdown doküman**, bir çağrı merkezinin her gün önünde duran türden.
+
+- 6 ücret sayfası — `fare_classic_*`, `fare_flex_*`, `fare_lite_*`; her biri kısa hat ve uzun hat olarak
+- 6 operasyon bülteni — `bulletin_*`
+- 6 çağrı merkezi makrosu — dört `macro_tr_*` Türkçe, iki `macro_en_*` İngilizce
+- 4 standart prosedür — `sop_*`
+- 3 şirket seyahat politikası — `policy_*`
+- Wyvern Overseas ile interline ve codeshare anlaşmaları, bir de genel FAQ
+
+**İki edisyonu var:** `corpus/2026-Q2/` geçen çeyreğin kural kitabı (21 doküman), `corpus/2026-Q3/` şu an yürürlükte olan (28 — yedi doküman eklendi). Aynı kitap, üç ay arayla; `corpus/DELTA.md` tam olarak neyin değiştiğini listeliyor. Eğitmen klasörü şimdi projektörde açıyor; sen de kendi klonunda istediğin zaman bakabilirsin:
+
+**Terminal (`amadeus-rag-lab` repo kökü):**
+
+```bash
+ls corpus/2026-Q3
+```
+
+<div class="presenter-note">
+Otuz saniye, projektör: <code>corpus/2026-Q3/</code> klasörünü VS Code'da ya da Finder'da aç, <code>fare_classic_shorthaul.md</code>'yi aç, RULE 2A'ya kaydır, K satırını göster. Sonra yanına <code>2026-Q2/</code>'deki kopyayı aç — aynı satır, EUR 120. Edisyonları daha fazla açıklama; onları modül 8 harcıyor. Salonun görmesi gereken tek şey: veri, okunabilir dosyalardan oluşan bir klasör.
+</div>
+
+## Soru
+
+Bütün günün üzerine kurulu olduğu tek soru — bir Kraken Air çağrı merkezi temsilcisinin vardiyada on kez aldığı soru:
 
 > Passenger wants to cancel a short-haul Europe ticket, CLASSIC fare, booking class K. How much is the cancellation penalty per passenger?
 
-Gerçek rakam `corpus/2026-Q3/fare_classic_shorthaul.md` içinde, RULE 2A tablosu, K satırında: **EUR 90**, yolcu başına sabit bir tutar; yüzde değil. Geçen çeyrekte aynı satırda EUR 120 yazıyordu. Kraken Air kurgusal — modelin okumuş olabileceği bir web sitesi, bir forum başlığı, bir basın bülteni yok. Bu rakamı hiç görmedi.
+Gerçek rakam `corpus/2026-Q3/fare_classic_shorthaul.md` içinde, RULE 2A tablosu, K satırında: **EUR 90**, yolcu başına sabit bir tutar; yüzde değil. Geçen çeyreğin edisyonunda EUR 120 yazıyordu.
+
+Şimdi model, tek başına. Retrieval yok, doküman yok, sadece ağırlıklar. Kraken Air kurgusal — modelin okumuş olabileceği bir web sitesi, bir forum başlığı, bir basın bülteni yok. Bu rakamı hiç görmedi.
 
 İsteği çalıştır ve `answer` alanını oku. Bu sayfada kayıtlı bir döküm yok, bilerek: model `gemma3:4b`, `temperature: 0` ile çalışıyor ve yine de senin makinende eğitmeninkinden farklı bir şey söyleyecek. **Değişmeyen şey cevabın biçimi — kendinden emin, spesifik, kaynaksız ve yanlış.** 12 Eylül çalıştırmasında "€50" türünden bir tutar söyledi; olgu gibi, tek temiz cümleyle. Sendeki rakam farklı olacak. Farklı olması asıl mesele: bilgiye gerçekten sahip bir model her seferinde, her laptopta EUR 90 derdi.
 
@@ -28,7 +57,7 @@ Cevapta *olmayana* bak. "Emin değilim" yok. "Kraken Air ücret kurallarına gö
 - Kraken Air'in İstanbul'daki lounge'unun adı ne
 - aynı K biletinde no-show cezası ne kadar
 
-Hepsine cevap verecek, aynı tonda, ve hiçbiri okuduğun cevabın dışında hiçbir yerde yok. Canını yakacak olan şu: no-show cezası aynı tabloda *var*, iptal cezasının iki sütun sağında — EUR 180 — ve modelin o hücreye erişimi diğer hücrelere olduğundan fazla değil.
+Hepsine cevap verecek, aynı tonda, ve hiçbiri okuduğun cevabın dışında hiçbir yerde yok. Canını yakacak olan şu: no-show cezası aynı tabloda *var*, iptal cezasının bir sütun sağında — EUR 180 — ve modelin o hücreye erişimi diğer hücrelere olduğundan fazla değil.
 
 <div class="presenter-note">
 Birisi aynı soruyu daha büyük bir modele yazıyor olacak, "bakın o daha iyi" demek için. Bırak yapsın — frontier bir model çekince koymaya daha yatkındır, ama bu çeyreğin rakamının 120 değil 90 olduğunu yine bilemez, çünkü hiçbir model eğitildiği sırada var olmayan bir dokümanı okumuş değil. Tartışmayı oraya taşı, 4B modeli savunma.
@@ -84,7 +113,7 @@ Ağırlıkları depolama değil sıkıştırma olarak düşün. Eğitim, bir cor
 
 Reddetme genelde hak ettiğinden az ilgi görüyor. Instruction tuning, özel veya çabuk değişen bir bilginin sorgulanmasına *benzeyen* sorularda "bilmiyorum" demeyi ödüllendiriyor; yani sinyal ifadeyi takip ediyor, modelin o bilgiye sahip olup olmadığını değil. Çizgiyi bir system prompt ile oynatabilirsin — "yalnızca eminsen cevap ver" — ama yaptığın şey bir prior'ı ayarlamak, bir bilgi kontrolü kurmak değil; bunun bedelini lab ileride gösteriyor: katı bir abstain talimatı, doğru doküman context'inde dururken bile küçük bir modeli reddettiriyor. Alternatif, cevabı bulunmuş bir dokümana dayamak ve kaynağı cevapla birlikte geri vermek. Bu, rakam oynuyor mu diye modele beş kez sormaktan ucuz ve denetlenebilir — bir havayolunun ihtiyacı olan da denetlenebilirlik.
 
-Çıplak isteğin gösteremediği tek şey: Kraken Air rakamının doğru cevap verilebilmesi için modelin *neresinde* durması gerektiği. Bir sonraki modül o.
+Yalın isteğin gösteremediği tek şey: Kraken Air rakamının doğru cevap verilebilmesi için modelin *neresinde* durması gerektiği. Bir sonraki modül o.
 
 ## Çıkış cümlesi
 

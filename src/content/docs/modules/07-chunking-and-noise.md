@@ -7,6 +7,11 @@ description: "The retriever brought the wrong slice. Fix the slicing, not the mo
 
 > **The right document came back and the answer was still wrong. What do we change — the model, or the cut?**
 
+> **In the room:** Bruno › `05-chunking-and-noise` › `1-reingest-structure` → `2-peek-again` → `3-query-again`.
+> Step 1 — read `chunks`: 132, was 294; `collection` ends in `-structure-1500-strip`.
+> Step 2 — the `| K |` chunk now starts with `[fare classic shorthaul > RULE 2A …]` and holds the header row.
+> Step 3 — read `answer`: EUR 90, with `[fare_classic_shorthaul]` cited.
+
 [Module 6](/modules/06-chromadb/) ended with the chunks on screen. `fare_classic_shorthaul.md`
 was at rank 1 — a hit — and the chunk that held the K row did not hold the line naming the
 columns. The model read `EUR 70 | EUR 90 | EUR 180` with no idea which column was which and
@@ -133,9 +138,8 @@ that the model was handed the header and the row together for the first time tod
 <div class="presenter-note">
 Thirty minutes, of which the live requests are five: 1 is the slow one (it embeds 132 chunks —
 read <code>stages.embed</code> aloud), 2 and 3 are seconds. Before revealing the <code>| K |</code>
-chunk in step 2, ask: "the row survived in module 6 — so why was the answer wrong?" Fifteen
-seconds of silence, then someone says "the header". It lands ten times harder from a
-participant. If Ollama is down, <code>/ingest</code> cannot embed and the module has no live
+chunk in step 2, one clause of recap is enough — the room already found the header-less K row
+itself in module 6. If Ollama is down, <code>/ingest</code> cannot embed and the module has no live
 leg — read the page, then on your own machine run <code>npm test</code> in the repo root:
 <code>test/chunking.test.ts</code> needs no model and asserts exactly this — the fixed test
 checks the K-row chunk does <em>not</em> contain "Cancellation penalty", the structure test checks
@@ -174,8 +178,9 @@ best chunk of a document counts as a hit for that document). One run each on an 
 
 Read it honestly. **Structure-aware chunking does not find the right document more often** —
 hit@1 is 0.700 on three of the five rows, and the stripped index is one question lower. What it
-fixes is the **chunk**: the K row together with its header, which is what turns a confident wrong
-amount into EUR 90. A document-level score cannot see that; step 2 can.
+fixes is the **chunk**: the K row together with its header — with fixed-280 the model either said
+it did not know or read the wrong column; with structure-aware chunks it says EUR 90. A
+document-level score cannot see that; step 2 can.
 
 Two things the table does say. Overlap loses on every metric at once and costs 74 more chunks to
 do it. And the best recall@5 belongs to the most fragmented index: more small pieces give the gold

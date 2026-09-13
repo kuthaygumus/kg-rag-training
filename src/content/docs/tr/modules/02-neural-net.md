@@ -7,11 +7,11 @@ description: "Bir gate değil, gate'lerin ihtiyaç duyduğu kurulum: projektörd
 
 > **Bir model 'öğrenmek' derken gerçekte ne yapıyor?**
 
-Bugünkü diğer bütün modüller bir aracın patlamasıyla açılıyor ve bir sonraki aracı zorunlu kılan hatayla kapanıyor. Bu modül öyle değil. Burada bir şey patlamıyor, Kraken corpus'una karşı bir ölçüm yapılmıyor, yeni bir retrieval tekniği tanıtılmıyor ve sen hiçbir şey yazmıyorsun. Modül 2 tek bir cümleyi hak etmek için var — *ağırlık, training verisinin donmuş bir fotoğrafıdır* — ve modül 3, 4 ve 8 bu cümleye yaslanıyor; hiçbirinin durup onu türetecek zamanı yok.
+Bugünkü diğer bütün modüller bir aracın patlamasıyla açılıyor ve bir sonraki aracı zorunlu kılan hatayla kapanıyor. Bu modül öyle değil: bir şey patlamıyor, Kraken corpus'una karşı bir ölçüm yapılmıyor, yeni bir retrieval tekniği tanıtılmıyor ve sen hiçbir şey yazmıyorsun. Modül 2 tek bir cümleyi hak etmek için var — *ağırlık, training verisinin donmuş bir fotoğrafıdır* — ve modül 3, 4 ve 8 bu cümleye yaslanıyor; hiçbirinin durup onu türetecek zamanı yok.
 
 ## Hâlâ içinde durduğumuz hata
 
-On dakika önce `gemma3:4b`, Q3 sayfasının **EUR 90** dediği yerde — sabit, yolcu başına — K sınıfı iptal sorusuna kendinden emin, uydurma bir tutar verdi (12 Eylül koşusunda €50 civarındaydı; senin ifaden ve rakamın farklı olacak). Odanın buna verdiği ad "model uydurdu": bir tarif, açıklama değil.
+On dakika önce `gemma3:4b`, Q3 sayfasının **EUR 90** dediği yerde — sabit, yolcu başına — K sınıfı iptal sorusuna kendinden emin, uydurma bir tutar verdi (12 Eylül koşusunda €50 civarındaydı; seninki farklı olacak). Odanın buna verdiği ad "model uydurdu": bir tarif, açıklama değil.
 
 Yarım saat sonra iki seçenek arasında karar vereceğiz: bu modeli kural kitabıyla fine-tune etmek mi, yoksa kural kitabını sorgu anında eline vermek mi. Uydurma sayının fiziksel olarak nerede durduğunu söyleyemiyorsan, EUR 90'ın neden aynı yerden gelemeyeceğini de söyleyemezsin; o zaman bu karar dürüst bir karar olmaz.
 
@@ -29,11 +29,11 @@ Bir MNIST görüntüsü 28x28 gri piksel. Düzleştirince elinde 0 ile 1 arasın
 
 **Nöron.** TypeScript diliyle bir nöron `Math.max(0, dot(inputs, weights) + bias)`: her girdiyi kendi ağırlığıyla çarp, topla, bir sabit ekle, negatifleri sıfıra kırp. O kırpma ReLU — fonksiyonun tamamı `max(0, x)`. **Ağırlık** dediğimiz şey bir `Float32Array` içindeki tek bir elemandan fazlası değil. Katman, aynı girdileri paylaşan 128 böyle nöron; bu da tek bir matris çarpımı.
 
-**Forward pass.** Girdi çarpı 784x128'lik matris, artı 128 bias, kırp; çarpı 128x10'luk matris, artı 10 bias; on sayıyı olasılığa çevir. En büyüğü cevap. Modelin tamamı, içinde 101 770 sabit yakalanmış saf bir `(Float32Array) => number[10]` fonksiyonu. İki matris çarpımı ve bir kırpma.
+**Forward pass.** Girdi çarpı 784x128'lik matris, artı 128 bias, kırp; çarpı 128x10'luk matris, artı 10 bias; on sayıyı olasılığa çevir. En büyüğü cevap. Modelin tamamı, içinde 101 770 sabit yakalanmış saf bir `(Float32Array) => number[10]` fonksiyonu.
 
 **Loss.** O cevabın ne kadar yanlış olduğunu söyleyen tek bir sayı: model yanılıyorsa büyük, tutturuyorsa küçük. Eğitimden önce ağ olasılığı on rakama aşağı yukarı eşit dağıtıyor; kayıtlı koşunun ilk batch'i **2.35** loss alıyor, yani tahmin etmenin maliyetine yakın bir değer. Son batch **0.03** alıyor.
 
-**Gradient descent.** Buradaki tek gerçek fikir. 101 770 sayının her biri için, o sayı birazcık artsa loss'un ne kadar değişeceğini hesapla. Bu 101 770 eğim gradient; backpropagation da zincir kuralının, hepsini yaklaşık bir forward pass maliyetine çıkaracak kadar verimli uygulanmış hâli. Sonra her sayıyı loss'u düşüren yönde küçük bir adım kaydır, sonraki 32 görüntülük batch'i al, tekrar yap.
+**Gradient descent.** Buradaki tek gerçek fikir. 101 770 sayının her biri için, o sayı birazcık artsa loss'un ne kadar değişeceğini hesapla. Bu eğimler gradient; backpropagation da zincir kuralının, hepsini yaklaşık bir forward pass maliyetine çıkaracak kadar verimli uygulanmış hâli. Sonra her sayıyı loss'u düşüren yönde küçük bir adım kaydır, sonraki 32 görüntülük batch'i al, tekrar yap.
 
 **Epoch.** 60 000 training görüntüsünün tamamı üzerinden bir geçiş bir epoch. Beş tane koşuyoruz. Başka hiçbir şey olmuyor: akıl yürütme adımı yok, saklanan örnek yok, lookup yok. **Training, o diziye yazan tek döngü.** Inference sadece okuyor.
 
@@ -49,7 +49,7 @@ Notebook'un asıl önemli hücresi sonuncusu. İlk ağırlık matrisinin bir sat
 
 O fark bir kere, döngü bittiğinde yazıldı ve yarın da aynı görünecek. Bu ağa bir rakam sor, cevaplıyor. Eğitimden sonra ortaya çıkan herhangi bir şeyi sor, bilmesinin hiçbir mekanizması yok — reddettiği için değil, artık çalışan bir şey kalmadığı için.
 
-**Neden o piksel, köşedeki değil.** Satır 406. piksele ait — 14. satır 14. sütun, çerçevenin tam ortası, rakamların çoğunun mürekkep bıraktığı yer. Onun yerine sol üst pikseli seçersen satır hiç kımıldamıyor: o piksel 60 000 training görüntüsünün hepsinde 0.0, dolayısıyla gradient'i her adımda tam olarak sıfır ve satır beş epoch sonra bit düzeyinde aynı çıkıyor. Kımıldamayan bir satır, training'in patladığı anlamına gelmiyor; gradient'in hiç sinyal taşımamış bir girdi hakkında doğruyu söylemesi demek. Hücre 406. pikselin ne sıklıkla mürekkepli olduğunu da basıyor; seçim güvene değil ekrana dayanıyor.
+**Neden o piksel, köşedeki değil.** 406. satır (14, 14) pikseline ait — çerçevenin tam ortası, rakamların çoğunun mürekkep bıraktığı yer. Sol üst piksel ise 60 000 training görüntüsünün hepsinde 0.0; gradient'i her adımda sıfır ve satırı beş epoch sonra bit düzeyinde aynı çıkıyor — training patlamıyor, gradient hiç sinyal taşımamış bir girdi hakkında doğruyu söylüyor. Hücre 406. pikselin ne sıklıkla mürekkepli olduğunu da basıyor; seçim güvene değil ekrana dayanıyor.
 
 ## Ne çalıştırıyorsun
 
@@ -61,7 +61,7 @@ O fark bir kere, döngü bittiğinde yazıldı ve yarın da aynı görünecek. B
 https://colab.research.google.com/github/kuthaygumus/amadeus-rag-training/blob/main/notebooks/01_mnist_tiny_net.ipynb
 ```
 
-Eğitmen `notebooks/01_mnist_tiny_net.ipynb` dosyasını Colab'da açıyor — ya da kendi makinesinde yerel çalıştırıyor — ve hücre hücre yürüyor. Düz dizi aritmetiği, framework yok, GPU yok; backward pass'in her satırı bir kütüphane çağrısının arkasında değil, hücrenin içinde görünüyor.
+Eğitmen onu Colab'da açıyor — ya da yerelde çalıştırıyor — ve hücre hücre yürüyor. Düz dizi aritmetiği, framework yok, GPU yok; backward pass'in her satırı bir kütüphane çağrısının arkasında değil, hücrenin içinde görünüyor.
 
 **Projektörde neye bakacaksın**, sırayla:
 
@@ -71,7 +71,7 @@ Eğitmen `notebooks/01_mnist_tiny_net.ipynb` dosyasını Colab'da açıyor — y
 4. ASCII loss eğrisi — 2.35'ten 0.03'e düşen bir `#` sütunu
 5. son hücre: `architecture … (unchanged)`, `parameter count … (unchanged)`, `W1[406][:4] before` ve `now` satırları, `accuracy: 97.47%   (was 9.9%)`
 
-**Sonra, istersen.** Yukarıdaki Colab linki herhangi bir tarayıcıda, kişisel Google hesabıyla açılıyor; isteğe bağlı, bugün sonraki hiçbir şey ona bağlı değil ve kurumsal ağ için değil, ev için. `UNVERIFIED: notebook'un Colab'da değiştirilmeden çalıştığı — teslim edilen hâliyle ilk hücre MNIST arşivlerini indirmek yerine yerel bir cache'ten okuyor; eğitmen Colab yolunu günden önce doğruluyor.`
+**Sonra, istersen.** Yukarıdaki Colab linki herhangi bir tarayıcıda, kişisel Google hesabıyla açılıyor ve olduğu gibi çalışıyor — ilk hücre MNIST'i kendisi indiriyor. İsteğe bağlı, bugün sonraki hiçbir şey ona bağlı değil ve kurumsal ağ için değil, ev için.
 
 ## Sayılar ne dedi
 
@@ -94,19 +94,17 @@ Eğitmen `notebooks/01_mnist_tiny_net.ipynb` dosyasını Colab'da açıyor — y
 | cross-entropy, ilk batch -> son | 2.35 -> 0.03 |
 | training süresi | 0.92 sn |
 
-Eğitmenin M-serisi Mac'inde, yalnızca CPU ile kaydedildi. Rastgelelik seed'i 0'a sabit, dolayısıyla doğruluklar yaklaşık değil kesin — yeniden koşunca aynı rakamlara oturuyor. Makineye göre değişen tek sayı süre; Colab'da farklı çıkacak. Sesli söylemeye değer iki şey: öğrenmenin neredeyse tamamı ilk epoch'ta oluyor ve 4. epoch 5.'ten yüksek alıyor — eğri iyileşmeyi bırakıp dalgalanmaya başlıyor.
-
-`UNVERIFIED: W1[406][:4] before/now satırlarındaki sekiz rakam — hiçbir kayıtlı tabloya taşınmadı. Hücrenin göstermesi gereken şey dört sayının da kımıldadığı; rakamları bu sayfadan değil projektörden oku.`
+Eğitmenin M-serisi Mac'inde, yalnızca CPU ile kaydedildi. Seed 0'a sabit, dolayısıyla doğruluklar yaklaşık değil kesin — yeniden koşunca aynı rakamlara oturuyor; makineye göre değişen tek sayı süre ve Colab'da farklı çıkacak. Sesli söylemeye değer iki şey: öğrenmenin neredeyse tamamı ilk epoch'ta oluyor ve 4. epoch 5.'ten yüksek alıyor — eğri iyileşmeyi bırakıp dalgalanmaya başlıyor. `W1[406][:4]` before/now rakamları buraya bilerek kopyalanmadı: hücrenin göstermesi gereken şey dört sayının da kımıldadığı ve onları projektörden okuyorsun.
 
 </div>
 
 ## Daha derine
 
-**Neden ReLU.** İki matris çarpımının arasında bir non-linearity olmazsa ağ komple çöküyor: matris çarpı matris yine bir matris, yani 784 -> 128 -> 10, tek bir 784 -> 10 katmanı kadar ifade gücüne sahip olur. ReLU bu çöküşü kıran en ucuz fonksiyon — sayı başına tek karşılaştırma, 0 veya 1 olan bir gradient. Bilinen arızası şu: girdisi hep negatif kalan bir nöronun gradient'i sonsuza kadar sıfır olur ve öğrenmeyi bırakır; transformer'larda yerini daha yumuşak varyantların alması bu yüzden. Modül 3'ün fine-tune ettiği Qwen modeli gated bir MLP'nin içinde SiLU kullanıyor; adapter'ının `gate_proj`, `up_proj` ve `down_proj`'u hedeflemesi de bu yüzden.
+**Neden ReLU.** İki matris çarpımının arasında bir non-linearity olmazsa ağ komple çöküyor: matris çarpı matris yine bir matris, yani 784 -> 128 -> 10, tek bir 784 -> 10 katmanı kadar ifade gücüne sahip olur. ReLU bu çöküşü kıran en ucuz fonksiyon — sayı başına tek karşılaştırma, 0 veya 1 olan bir gradient. Bilinen arızası şu: girdisi hep negatif kalan bir nöronun gradient'i sonsuza kadar sıfır olur ve öğrenmeyi bırakır; transformer'ların daha yumuşak varyantlar kullanması bu yüzden — modül 3'ün fine-tune ettiği Qwen modeli SiLU kullanıyor.
 
-**101 770 nerede duruyor.** İlk katmanda 784 x 128 = 100 352 ağırlık, artı 128 bias = 100 480. Sonra 128 x 10 = 1 280, artı 10 bias = 1 290. Toplam 101 770 ve bunun %98.7'si ilk katmanda — parametreler, en geniş şeyin bir sonraki en geniş şeyle buluştuğu yerde toplanıyor.
+**101 770 nerede duruyor.** %98.7'si ilk katmanın 784 x 128'i — parametreler, en geniş şeyin bir sonraki en geniş şeyle buluştuğu yerde toplanıyor; tam döküm yukarıdaki tabloda.
 
-**Transformer ölçeğinde ne değişiyor.** Kavramsal olarak neredeyse hiçbir şey. `gemma3:4b` aynı forward-loss-gradient-update döngüsü: tek dense katman yerine attention katmanları, piksel yerine metin token'ı — bizim 101 770'imize karşılık yaklaşık dört milyar parametre, kabaca 40 000 kat fazlası, pull edilmiş hâliyle diskte 3.3 GB. Canını yakan farklar ekonomik: bizim koşumuz laptop CPU'sunda bir saniyenin altı; 4B'lik bir pretraining ise kimsenin bir ücret değişti diye tekrarlamadığı bir cluster işi. Ve döngü offline; inference sırasında ağırlıklar okunuyor, asla yazılmıyor.
+**Transformer ölçeğinde ne değişiyor.** Kavramsal olarak neredeyse hiçbir şey. `gemma3:4b` aynı forward-loss-gradient-update döngüsü: tek dense katman yerine attention katmanları, piksel yerine metin token'ı — bizim 101 770'imize karşılık yaklaşık dört milyar parametre, pull edilmiş hâliyle diskte 3.3 GB. Canını yakan farklar ekonomik: bizim koşumuz laptop CPU'sunda bir saniyenin altı; 4B'lik bir pretraining ise kimsenin bir ücret değişti diye tekrarlamadığı bir cluster işi. Ve döngü offline: inference sırasında ağırlıklar okunuyor, asla yazılmıyor.
 
 **10 milyon dokümanda.** Training yapmadığın için doğrudan bir maliyeti yok — ama bilgi bir kere ağırlıkların içine girdiyse, onu değiştirmek her değişiklik başına yeni bir training koşusu ve yeni bir değerlendirme demek; üç ayda bir değişen hiçbir şeyin orada işi yok.
 

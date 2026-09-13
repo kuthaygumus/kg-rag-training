@@ -36,9 +36,8 @@ question on the 12 Sep run. You cannot retrain quarterly and you cannot pay for 
 question — so hand the model the right piece. Retrieval is born here, as a cost-saving.
 
 **3. Fine-tuning** — a model that answers Q2 from its own weights works, until the data moves.
-`UNVERIFIED: kraken-q2 has not been built; the stale answer is a prediction, not something this room
-watched.` The shape of the failure needs no model: weights cannot know a row changed and cannot cite
-the row they learned.
+The shape of the failure needs no model: weights cannot know a row changed and cannot cite the row
+they learned.
 
 **2. How a neural network learns** — weights are a frozen photograph of the training data. Which
 raised the only reasonable question: can we re-take the photo with our data?
@@ -85,16 +84,16 @@ hit@1 / recall@5 / MRR, one run on 12 Sep 2026 (numbers drift on other machines)
 | structure-1500 + strip | 0.650 | 0.850 | 0.766 |
 
 Read it honestly: structure-aware chunking does **not** find the right document more often. It fixes
-the **chunk** — the K row together with its header — which is what turns "I don't know" into EUR 90.
-Overlap loses on every metric. This is why a document-level number alone is not enough, and why you
+the **chunk** — the K row together with its header: with fixed-280 the model either said it did not
+know or read the wrong column; with structure-aware chunks it says EUR 90. Overlap loses on every metric. This is why a document-level number alone is not enough, and why you
 still read what was retrieved.
 
 </div>
 
 **Re-ingest is the deployment unit, not retraining.** When Q3 replaces Q2 the pipeline does not
 change, the model does not change, the prompt does not change. One ingest of the new edition, one
-collection name that says what is in it — `kraken-2026-Q3-structure-1500` — and the stale answer is
-gone. That is a deploy you can schedule, roll back and diff. A fine-tune is none of those.
+collection name that says what is in it — `kraken-2026-Q3-structure-1500-strip` — and the stale
+answer is gone. That is a deploy you can schedule, roll back and diff. A fine-tune is none of those.
 
 ## What stays on your laptop
 

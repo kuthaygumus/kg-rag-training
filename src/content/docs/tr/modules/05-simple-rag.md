@@ -7,6 +7,11 @@ description: "Read, chunk, embed, store, retrieve, generate — her aşama bir H
 
 > **Modele doğru parçayı nasıl veririm?**
 
+> **Salonda:**
+> - Bruno: `02-ingest` › `ingest-q3` → `03-retrieve` › `retrieve` → `04-query` › `query`, bu sırayla
+> - Oku: `stages` / `chunks` · `hits[].score` · `answer` / `sources` / `debug.prompt`
+> - Bekle: 294 chunk; doğru doküman, yanlış dilim; yanlış ya da "I don't know" diyen bir cevap
+
 [Modül 4](/tr/modules/04-the-data-moved/) temellendirilmiş bir cevapla ve bir faturayla bitti.
 Yirmi sekiz dokümanın tamamını prompt'a koymak bir laptopta yaklaşık 21 000 token ve bir ila iki
 dakika tutuyor — cevabı tek bir tablonun tek bir satırı olan bir soru için. Kural kitabı üç ayda bir
@@ -60,21 +65,26 @@ Bir embedding modeli bir string alır ve sabit uzunlukta bir ondalık sayı list
 tamamı bu. `bge-m3` her girdi için — tek kelime de olsa bir sayfa da olsa — **1024** sayı döndürür ve
 bunları aynı anlama gelen metinler birbirine yakın düşecek şekilde yerleştirir. Modül 2'de 784
 pikseli bir vektöre çeviren bir ağ kurduk; bu, aynı hamlenin metne uygulanmış hali. Yakınlık cosine
-similarity — 1, birebir aynı yön demek; Chroma mesafeyi döndürüyor, api onu az sonra okuyacağın
-`score`'a çeviriyor. Bundan iki kural çıkıyor. **Soru, chunk'larla aynı modelle embed edilmeli**,
-yoksa iki vektör farklı uzaylarda yaşar ve aradaki mesafe hiçbir şey ifade etmez. Ve model bu salon
-için çok dilli olmalı: corpus'un yarısı İngilizce ücret kuralı, ajanlar Türkçe soruyor, ve sadece
-İngilizce bilen bir embedder'da "Türkçe olmak" "iptal cezasıyla ilgili olmak"tan büyük bir eksen —
-alakasız iki Türkçe cümle, bir Türkçe soru ile onun İngilizce cevabından daha yakın durur. `bge-m3`
-yaklaşık yüz dilde cümle-ve-çevirisi çiftleriyle eğitildi; loss tam olarak o ekseni cezalandırıyor.
-Embedder'ın bu olmasının sebebi bu, ve karar sen weight'leri indirmeden önce verilmişti.
+similarity — 1, birebir aynı yön demek — ve Chroma mesafeyi döndürüyor, api onu az sonra okuyacağın
+`score`'a çeviriyor.
+
+Bundan iki kural çıkıyor. Birincisi, **soru, chunk'larla aynı modelle embed edilmeli**, yoksa iki
+vektör farklı uzaylarda yaşar ve aradaki mesafe hiçbir şey ifade etmez.
+
+İkincisi, model bu salon için çok dilli olmalı. Corpus 28 doküman, 4'ü Türkçe çağrı merkezi
+makrosu, geri kalanı İngilizce — ve sorular Türkçe gelecek. Sadece İngilizce bilen bir embedder'da
+"Türkçe olmak", "iptal cezasıyla ilgili olmak"tan büyük bir eksen: alakasız iki Türkçe cümle, bir
+Türkçe soru ile onun İngilizce cevabından daha yakın durur. `bge-m3` yaklaşık yüz dilde
+cümle-ve-çevirisi çiftleriyle eğitildi; loss tam olarak o ekseni cezalandırıyor. Embedder'ın bu
+olmasının sebebi bu, ve karar sen weight'leri indirmeden önce verilmişti.
 
 <div class="presenter-note">
 Ingest response'unu kaydırıp geçme. <code>stages</code> ile <code>sample</code>'ı projektörde yan yana
 koy ve el kaldırt: "kimin chunk #1'i kelimenin ortasından başlıyor?" Bütün eller. Sonra: "bu bir
 problem mi?" Henüz kimse bilmiyor; doğru durum da bu. Embedding paragrafı dahil dört dakika — "1024
 sayı, iki tarafta aynı model, bilerek çok dilli" de ve fazlasını söyleme; eskiden burada duran
-bake-off kaldırıldı, hafızadan geri getirme.
+bake-off kaldırıldı, hafızadan geri getirme. Katılımcı laptoplarında ingest süresi `UNVERIFIED: ölçülmedi` —
+projektörde <code>stages.total</code>'dan oku, her laptop kendininkini okusun.
 </div>
 
 ## İkinci aşama — retrieve, henüz model yok
@@ -133,9 +143,10 @@ kullanmasına izin verilen chunk'ları listeliyor — `source`, `chunk`, `score`
 `excerpt` — ve `debug.ms` süreyi `embed`, `search` ve `generate` olarak ayırıyor.
 
 Fixed-280 index'iyle cevap genellikle ya yanlış ya da dürüst bir "I don't know". 12 Eylül'deki koşuda,
-eğitmenin makinesinde model başlıksız bir tablo satırının yanlış sütununu okudu ve **EUR 13** dedi —
-senin cümlen ve sayın farklı olacak. Doğru cevap EUR 90 ve modelin hiç şansı yoktu: K satırını taşıyan
-chunk, hangi sütunun ceza olduğunu söyleyen satırı taşımıyordu. Çöp girdi, çöp çıktı — **ve artık
+eğitmenin makinesinde model **EUR 13** dedi — senin cümlen ve sayın farklı olacak. Doğru cevap EUR 90
+ve 1. sırada dönen dokümanın içinde. Yani retriever doğru dokümanı buldu, model yine de yanlış cevapladı:
+eline verilen şey o dokümanın yanlış *dilimi*ydi. Modül 6 store'u açıp hangi dilim olduğunu tam olarak
+gösteriyor. Çöp girdi, çöp çıktı — **ve artık
 çöpü görebiliyorsun**, çünkü prompt response'la birlikte geri geldi. Bu, bütün lab'deki en işe yarar
 tek alan.
 
@@ -147,7 +158,8 @@ tam string — soruldu ve cevap vermeyi reddetti.
 <div class="presenter-note">
 Sekiz dakika. <code>query</code>'yi projektörde çalıştır, <code>answer</code>'ı yüksek sesle oku,
 sonra "bu sayı nereden geldi?" diye sor ve hiçbir şey söylemeden <code>debug.prompt</code>'a kaydır.
-Salondan biri K satırını bulsun ve başlığın orada olmadığını fark etsin. Senin koşun sütun uydurmak
+<code>sources</code>'u — hangi chunk'lar — ve <code>prompt</code>'un kelimesi kelimesine modelin aldığı
+şey olduğunu göster. Orada dur: K satırını aratma, o açılış modül 6'nın. Senin koşun sütun uydurmak
 yerine abstain ediyorsa bu daha kötü değil, daha iyi bir demo — sabit abstain cümlesini oku ve
 <code>prompt</code>'un <code>null</code> değil string olduğunu göster: model soruldu ve reddetti.
 <br/><br/>
@@ -164,10 +176,9 @@ container'ı başladığından beri hiçbir şey ingest edilmediyse **409** dön
 unutuyor; Chroma veriyi volume'unda tutuyor.
 
 - **ne görmelisin** — `ingest-q3` assertion'larını geçiyor (`chunks` 200'ün üstünde, `vectorSize`
-  1024); `retrieve` tam üç `hits` döndürüyor; `query` `debug.prompt`'ta bir string döndürüyor
+  1024); `retrieve` en fazla üç `hits` döndürüyor (0.35 threshold'unu geçenler); `query` `debug.prompt`'ta bir string döndürüyor
 - **yaklaşık ne kadar sürer** — `retrieve` saniyenin altında; `query` birkaç saniye generation ekliyor;
-  uzun olan `ingest-q3`, 294 chunk üzerinde `embed` aşaması baskın.
-  `UNVERIFIED: katılımcı laptoplarında ingest süresi ölçülmedi — kendi stages.total alanından oku`
+  uzun olan `ingest-q3`, 294 chunk üzerinde `embed` aşaması baskın — süreyi kendi `stages.total` alanından oku.
 
 Gün içinde hiçbir şey indirilmiyor. `ingest-q3` container içinden Ollama'ya ulaşılamıyor diye
 başarısız olursa [kurulum](/tr/modules/00-setup/)'daki Windows notu geçerli — `OLLAMA_HOST=0.0.0.0` —

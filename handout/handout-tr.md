@@ -30,7 +30,7 @@ aramayla da bulamaz.
 
 Gün boyu tek bir soru sorduk: *"Kısa mesafe Avrupa bileti, CLASSIC fare, booking class K — yolcu
 başına iptal cezası ne kadar?"* Doğru cevap `fare_classic_shorthaul.md`'nin RULE 2A tablosunda,
-K satırında: **EUR 90** (Q3 edisyonu; Q2'de EUR 120). Önce çıplak model bir rakam uydurdu, sonra
+K satırında: **EUR 90** (Q3 edisyonu; Q2'de EUR 120). Önce yalın model bir rakam uydurdu, sonra
 korpusun tamamını prompt'a doldurduk ve çalıştı ama her soruda 21 000 token ödedik, sonra ingest →
 retrieve → query pipeline'ını kurduk, doğru dokümanı bulup yanlış dilimi okuduk, kesimi dokümanın
 yapısına göre değiştirdik ve EUR 90 geldi, en sonunda Q2'yi ingest edip 120'yi, Q3'ü ingest edip
@@ -46,7 +46,7 @@ Numaralar sitedeki modül numaralarıyla aynı. Modül 0 kurulumdu; 2 bir gate d
 
 | # | Elimdeki | Sahnede kırılan | Doğan ihtiyaç |
 |---|---|---|---|
-| 1 | Çıplak LLM | Kraken Air'i bilmiyor — ve **bilmediğini bilmiyor**; kendinden emin bir tutar uyduruyor | Bir modelde bilgi *nerede*? |
+| 1 | Yalın LLM | Kraken Air'i bilmiyor — ve **bilmediğini bilmiyor**; kendinden emin bir tutar uyduruyor | Bir modelde bilgi *nerede*? |
 | 2 | Sinir ağı (MNIST demo) | Weight'ler training verisinin **donmuş fotoğrafı** | Fotoğrafı kendi verimle yeniden çekebilir miyim? |
 | 3 | Fine-tune (`kraken-q2`, eğitmen demosu) | Q2'yi ezberden cevaplıyor, EUR 120 — **veri değişene kadar**; kaynak gösteremiyor | Taze bilgi, retrain'siz |
 | 4 | Korpusun tamamı prompt'ta | Çalışıyor — kırılan maliyet: ~21 000 token/soru, soğukta 60–120 s | Modele sadece doğru parçayı ver |
@@ -60,6 +60,25 @@ Kapanış cümlesi: *Bugünkü her adım, bir öncekinin yetmediği yerde doğdu
 değil, yeniden ingest'ti — ve Pazartesi hâlâ çalışan sürüm de o.*
 
 ---
+
+## 1a. Günün akışı
+
+| Saat | Modül | Sen |
+|---|---|---|
+| 09:00 | Açılış · kurulum kontrolü | Bruno `00-health` |
+| 09:20 | 1 · Yalın LLM | Bruno |
+| 09:32 | 2 · Sinir ağı | izle |
+| 09:52 | 3 · Fine-tuning | izle |
+| 10:17 | *Mola* | |
+| 10:32 | 4 · Veri değişti | Bruno |
+| 10:47 | 5 · Basit RAG | Bruno |
+| 11:27 | 6 · ChromaDB | Podman Desktop · terminal · Bruno |
+| 11:47 | 7 · Chunking ve gürültü | Bruno |
+| 12:17 | *Öğle* | |
+| 13:17 | 8 · Güncellik | Bruno |
+| 13:42 | Serbest keşif | Bruno, kendi soruların |
+| 14:12 | Günün bıraktıkları | izle |
+| 14:35 | 9 · Kapanış | |
 
 ## 2. Ortamı sıfırdan kurmak — bu kâğıt yeter
 
@@ -141,7 +160,7 @@ olarak son ingest edilen collection'a gidiyor; body'ye `collection` yazarak değ
 | | |
 |---|---|
 | `GET /health` | eksik olanı adıyla söylüyor (Ollama, bir model, Chroma) |
-| `POST /chat` | `{question, stuffCorpus?, edition?}` — çıplak model ya da edisyonun tamamı tek prompt'ta |
+| `POST /chat` | `{question, stuffCorpus?, edition?}` — yalın model ya da edisyonun tamamı tek prompt'ta |
 | `POST /ingest` | `{edition, strategy: fixed\|recursive\|structure, chunkSize?, overlap?, stripBoilerplate?}` — `read → chunk → embed → store` süreleri, `chunks`, `sample`, `collection` döner |
 | `GET /chunks` | `?source=<doküman id>&limit=` — Chroma'da ne duruyor (`source` = dosya adı, `.md`'siz) |
 | `POST /retrieve` | `{question, topK?, threshold?, collection?}` — yalnız retrieval, LLM çağrısı yok |

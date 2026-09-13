@@ -1,9 +1,9 @@
 ---
-title: "0. Kurulum — Gelmeden Önce"
-description: "Ollama, Podman Desktop ve Bruno kur, iki model indir, iki container ayağa kaldır, tek bir health isteği çalıştır — bir önceki akşam bir saatten az, neredeyse tamamı indirme. Ve bu sitedeki her komutu çalıştıran kural: durduğun yer repo kökü."
+title: "Başlamadan önce"
+description: "Üç program, iki model, bir git clone. Sonunda Bruno'da tek bir istek ready der."
 ---
 
-Bu modülün gate sorusu yok. Burası ön hazırlık: bir önceki akşam, yirmi kişiyle paylaşmadığın bir ağda yapılır. Bir saatten az, neredeyse tamamı indirme. Bu sayfadaki hiçbir şey Python, notebook ya da herhangi bir yerde hesap gerektirmiyor.
+Üç program, iki model, bir `git clone`. Sonunda Bruno'da tek bir istek `ready` der.
 
 ## Bu sitedeki her komut nereye yazılıyor
 
@@ -37,7 +37,7 @@ ollama --version
 
 **Windows, yönetici hakkı olmadan.** `OllamaSetup.exe` per-user bir kurulum: binary'ler `%LOCALAPPDATA%\Programs\Ollama` altına gidiyor, elevation istemiyor, sunucu senin oturumunla başlıyor.
 
-`UNVERIFIED: per-user kurulum yolu installer'ın tasarımı; yönetilen bir Windows laptopunda doğrulanmadı.` Kurulum senden yönetici parolası isterse orada dur — günün sabahı 09:00'da IT'yle tartışmak yerine bir önceki akşam haber ver, makinesi yeşil olan biriyle eşleştirilirsin.
+*Kullanıcı düzeyinde kurulumu gerçek bir Amadeus Windows laptopunda henüz doğrulamadık.* Kurulum senden yönetici parolası isterse orada dur — günün sabahı 09:00'da IT'yle tartışmak yerine önceden haber ver, makinesi yeşil olan biriyle eşleştirilirsin.
 
 Installer Ollama'yı kullanıcı PATH'ine ekliyor ama o sırada zaten açık olan bir terminal bunu görmüyor. `ollama --version` "komut bulunamadı" diyorsa, bir sonuç çıkarmadan önce o pencereyi kapat ve yenisini aç.
 
@@ -45,7 +45,7 @@ Installer Ollama'yı kullanıcı PATH'ine ekliyor ama o sırada zaten açık ola
 
 [podman-desktop.io](https://podman-desktop.io) üzerinden indir. Bir kez aç; ilk açılış ekranı Podman'ın kendisini kurmayı öneriyor — kabul et. macOS ve Windows'ta container'lar bu adımın oluşturduğu küçük bir Linux VM'inin içinde çalışıyor ve o VM'i oluşturmak da kendi başına bir indirme; evde yapılmasının sebebi bu.
 
-`UNVERIFIED: Podman Desktop'ın yönetilen bir Windows laptopunda yönetici hakkı olmadan kurulup kurulmadığı. Windows'ta WSL 2 gerektiriyor ve WSL 2'yi etkinleştirmek çoğunlukla elevation isteyen bir adım. Bu, günün 1 numaralı riski. Seni engelliyorsa bir önceki akşam söyle — eşleştirilirsin.`
+*Gerçek bir Amadeus Windows laptopunda henüz doğrulamadık: Podman Desktop yönetici hakkı olmadan kuruluyor mu.* Windows'ta WSL 2 gerektiriyor ve WSL 2'yi açmak çoğunlukla yönetici isteyen bir adım. Seni engelliyorsa günden önce söyle — makinesi yeşil olan biriyle eşleşirsin.
 
 Elinde zaten Docker Desktop ve çalışan bir `docker compose` var mı? O da çalışıyor, tek bir farkla; [Evde clone'la ve build et](#evde-clonela-ve-build-et) bölümünde yazıyor.
 
@@ -62,7 +62,7 @@ ollama pull gemma3:4b     # soruları cevaplıyor        (3.3 GB)
 ollama pull bge-m3        # metni vektöre çeviriyor    (1.2 GB)
 ```
 
-Toplam yaklaşık 4.5 GB. İkisini de indir. Gün içinde salonda model çekmek, bu sayfanın önlemek için var olduğu tek şey: bir kurumsal laptopta ölçüldü, ofis hattı `registry.ollama.ai` için tek akışta 3.7–7.8 MB/s veriyor. Yirmi laptop saat 09:00'da aynı 4.5 GB'lık pull'u başlattığında hattı her biri ayrı ayrı almıyor — bölüşüyorlar. Evdeki bağlantın pes ederse weight'ler sıradan dosyalar ve onlara sahip bir makineden kopyalanabiliyor: [Modelleri makineler arasında taşımak](#modelleri-makineler-arasında-taşımak).
+Toplam yaklaşık 4.5 GB. İkisini de indir. Gün içinde salonda model çekmek, bu sayfanın önlemek için var olduğu tek şey: bir kurumsal laptopta ölçüldü, ofis hattı `registry.ollama.ai` için tek akışta 3.7–7.8 MB/s veriyor. Yirmi laptop saat 09:00'da aynı 4.5 GB'lık pull'u başlattığında hattı her biri ayrı ayrı almıyor — bölüşüyorlar. Evdeki bağlantın pes ederse model dosyaları (*ağırlıklar* — ne olduklarını modül 2'de göreceksin) sıradan dosyalar ve onlara sahip bir makineden kopyalanabiliyor: [Modelleri makineler arasında taşımak](#modelleri-makineler-arasında-taşımak).
 
 **Modeli değiştirme.** Bu sitedeki her sayı `gemma3:4b` cevap verirken ve `bge-m3` embed ederken üretildi; ikisinden birini değiştirirsen ekranındaki cevaplar projektördekilerle örtüşmeyi bırakır ve günü bug olmayan bir farkı debug etmekle geçirirsin.
 
@@ -122,11 +122,21 @@ Body yok. Oka bas.
 | `chroma` | `unreachable at http://chroma:8000 — is the chroma container running?` | Podman Desktop'a bak: `chroma` yeşil değilse repo kökünde `podman compose down`, sonra `podman compose up`. |
 | Bruno: connection refused | — | api hiç ayakta değil. Terminalde `podman compose up` çalışıyor mu? Environment `local` seçili mi? |
 
-**Windows ve `OLLAMA_HOST`.** `UNVERIFIED: Windows'ta Ollama yalnızca 127.0.0.1'e bağlanabiliyor ve Podman VM'i oraya ulaşamıyor — terminalinde ollama list çalışırken container unreachable diyor. Belgelenen çözüm, kullanıcı ortam değişkeni OLLAMA_HOST=0.0.0.0 ayarlamak (Settings → System → Environment variables, kullanıcı kapsamı, yönetici gerekmiyor), sonra Ollama'yı tepsiden kapatıp yeniden açmak. Yönetilen bir Windows laptopunda henüz doğrulanmadı.` Buna evde çarparsan evde düzelt; 09:10'da çarparsan eşleşirsin.
+**Windows ve `OLLAMA_HOST`.** Windows'ta Ollama yalnızca `127.0.0.1`'i dinliyor olabilir ve Podman VM'i oraya ulaşamaz — terminalinde `ollama list` çalışırken container `unreachable` der. Belgelenen çözüm: kullanıcı ortam değişkeni `OLLAMA_HOST=0.0.0.0` (Settings → System → Environment variables, kullanıcı kapsamı, yönetici gerekmiyor), sonra Ollama'yı tepsiden kapatıp yeniden aç. *Gerçek bir Amadeus Windows laptopunda henüz doğrulamadık.* Buna evde çarparsan evde düzelt; 09:10'da çarparsan eşleşirsin.
+
+## Eğitim sabahı
+
+**Terminal (`amadeus-rag-lab` repo kökü):**
+
+```bash
+podman compose up          # --build yok: imajlar zaten makinende
+```
+
+Sonra bir kez daha **Bruno — `00-health` › `health`**. Lab'ı daha önce çalıştırdıysan `collections` birkaç isim listeleyebilir — sorun değil; modül 5 ihtiyacı olanı yeniden kurar.
 
 ## Modelleri makineler arasında taşımak
 
-Weight'ler diskte sıradan dosyalar ve taşınabilir — evdeki indirmesi pes eden herkes için çözüm bu. İki model birlikte yaklaşık 4.5 GB; bu bir indirme değil, bir USB bellek.
+Model dosyaları diskte sıradan dosyalar ve taşınabilir — evdeki indirmesi pes eden herkes için çözüm bu. İki model birlikte yaklaşık 4.5 GB; bu bir indirme değil, bir USB bellek.
 
 | İşletim sistemi | Dizin |
 |---|---|
@@ -153,10 +163,10 @@ Container image'ları da aynı şekilde taşınabilir — yeşil makinede `podma
 
 Ollama bir framework değil, lokal bir model sunucusu. Model adını veriyorsun, weight'lerin quantize edilmiş bir GGUF kopyasını indiriyor ve `http://localhost:11434` üzerinde küçük bir HTTP API açıyor — api container'ının onu herhangi bir servis gibi görmesi ve kendisinin container olmasına gerek kalmaması bu yüzden. Quantization her weight'i 16 bit yerine kabaca 4 bitte saklıyor, karşılığında küçük bir kalite kaybı veriyor: bu eğitimdeki işlerde görünmeyen, uzun bir akıl yürütme zincirinde görünecek bir kayıp. Günün hiçbir yerinde 4B'lik bir modelden tek çağrıda zekice bir şey istenmemesinin bir sebebi bu.
 
-İlk on dakikada birisi "neden API kullanmıyoruz?" diye soracak. Cevap "lokal daha iyi" değil. Cevap şu: **sabitlenmiş lokal bir model eylülde de ekimde de aynı cevabı veriyor, yani bir cevap oynadığında onu neyin oynattığını biliyoruz** — ve kimsenin oturmak için hesaba, key'e ya da onaya ihtiyacı olmuyor. Bu sitedeki her şey önündeki laptopta çalışıyor ve bu bir ideoloji değil, ölçüm kararı.
+Aklına "neden bir API kullanmıyoruz?" sorusu gelebilir. "Lokal daha iyi" olduğu için değil — **sabitlenmiş lokal bir model eylülde de ekimde de aynı cevabı veriyor, yani bir cevap oynadığında onu neyin oynattığını biliyoruz** — ve kimsenin oturmak için hesaba, key'e ya da onaya ihtiyacı olmuyor. Bu sitedeki her şey önündeki laptopta çalışıyor ve bu bir ideoloji değil, ölçüm kararı.
 
 İki container aynı kararın öteki yarısı. ChromaDB `1.5.9`'a sabitlenmiş, api bir lockfile'dan build ediliyor; compose dosyası deployment'ın tamamı, `podman compose down -v` de reset'in tamamı. Modül 6 o kutuyu açıyor.
 
 ## Çıkış cümlesi
 
-> Her şey kurulu ve henüz hiçbir şey birbirine bağlı değil. Yarın modelin tamamen yalnız haliyle başlıyoruz — **Bruno — `01-bare-llm` › `ask-about-kraken`**, hiç görmediği bir Kraken Air ücret kuralı hakkında tek bir soru.
+> Her şey kurulu ve henüz hiçbir şey birbirine bağlı değil. Gün, modelin tamamen yalnız haliyle başlıyor — **Bruno — `01-bare-llm` › `ask-about-kraken`**, hiç görmediği bir Kraken Air ücret kuralı hakkında tek bir soru.

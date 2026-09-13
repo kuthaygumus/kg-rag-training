@@ -7,6 +7,11 @@ description: "Read, chunk, embed, store, retrieve, generate — every stage visi
 
 > **How do I hand the model the right piece?**
 
+> **In the room:**
+> - Bruno: `02-ingest` › `ingest-q3` → `03-retrieve` › `retrieve` → `04-query` › `query`, in that order
+> - Read: `stages` / `chunks` · `hits[].score` · `answer` / `sources` / `debug.prompt`
+> - Expect: 294 chunks; the right document with the wrong slice; an answer that is wrong or "I don't know"
+
 [Module 4](/modules/04-the-data-moved/) ended with a grounded answer and a bill. Stuffing all
 twenty-eight documents into the prompt costs about 21 000 tokens and one to two minutes on a
 laptop, for a question whose answer is one row of one table. The rule book is reissued every
@@ -60,15 +65,19 @@ An embedding model takes a string and returns a fixed-length list of floating-po
 is the whole contract. `bge-m3` returns **1024** of them for any input, one word or one page, and
 positions them so that texts meaning the same thing land near each other. Module 2 built a network
 that turned 784 pixels into a vector; this is the same move on text. Closeness is cosine similarity
-— 1 means identical direction, and Chroma hands back the distance, which the api turns into the
-`score` you are about to read. Two rules follow. **The question must be embedded with the same model
-as the chunks**, or the two vectors live in different spaces and the distance means nothing. And the
-model must be multilingual for this room: half the corpus is English fare rules, the agents ask in
-Turkish, and in an English-only embedder "being Turkish" is a bigger axis than "being about
-cancellation penalties" — two unrelated Turkish sentences sit closer than a Turkish question and its
-own English answer. `bge-m3` was trained on sentence-and-translation pairs across about a hundred
-languages so that the loss punishes exactly that axis. That is why it is the embedder, and the
-choice was made before you pulled the weights.
+— 1 means identical direction — and Chroma hands back the distance, which the api turns into the
+`score` you are about to read.
+
+Two rules follow. First, **the question must be embedded with the same model as the chunks**, or
+the two vectors live in different spaces and the distance means nothing.
+
+Second, the model must be multilingual for this room. The corpus is 28 documents, 4 of them Turkish
+call-centre macros, the rest English — and the questions will come in Turkish. In an English-only
+embedder "being Turkish" is a bigger axis than "being about cancellation penalties": two unrelated
+Turkish sentences sit closer than a Turkish question and its own English answer. `bge-m3` was
+trained on sentence-and-translation pairs across about a hundred languages so that the loss
+punishes exactly that axis. That is why it is the embedder, and the choice was made before you
+pulled the weights.
 
 <div class="presenter-note">
 Do not let the ingest response scroll past. Put <code>stages</code> and <code>sample</code> on the
@@ -76,7 +85,8 @@ projector side by side and ask for a show of hands: "whose chunk #1 starts mid-w
 Then: "is that a problem?" Nobody knows yet, which is the right state to be in. Four minutes
 including the embedding paragraph — say "1024 numbers, same model both sides, multilingual on
 purpose" and nothing more; the bake-off that used to live here is gone, do not resurrect it from
-memory.
+memory. Ingest wall time on participant laptops is `UNVERIFIED: not measured` — read it off
+<code>stages.total</code> on the projector and let each laptop read its own.
 </div>
 
 ## Stage two — retrieve, no model yet
@@ -134,10 +144,10 @@ it was allowed to use — `source`, `chunk`, `score`, a 160-character `excerpt` 
 splits the time into `embed`, `search` and `generate`.
 
 With the fixed-280 index the answer is usually wrong or an honest "I don't know". On the 12 Sep run
-on the trainer's machine the model read the wrong column of a header-less table row and said
-**EUR 13** — your wording and number will differ. The right answer is EUR 90, and the model never had
-a chance: the chunk with the K row did not carry the line that says which column is the penalty.
-Garbage in, garbage out — **and now you can see the garbage**, because the prompt came back with the
+on the trainer's machine the model said **EUR 13** — your wording and number will differ. The right
+answer is EUR 90, and it is in the document that came back at rank 1. So the retriever found the right
+document and the model still got it wrong: whatever it was handed was the wrong *slice* of it. Module 6
+opens the store and shows you exactly which slice. Garbage in, garbage out — **and now you can see the garbage**, because the prompt came back with the
 response. That is the single most useful field in this whole lab.
 
 `abstained` is true in two different situations, and `debug.prompt` tells them apart. If nothing
@@ -148,7 +158,8 @@ scored above the threshold, no LLM call is made at all: `prompt` is `null`, `sou
 <div class="presenter-note">
 Eight minutes. Run <code>query</code> on the projector, read <code>answer</code> aloud, then ask
 "where did that number come from?" and scroll to <code>debug.prompt</code> without saying anything.
-Let somebody in the room find the K row and notice the header is not there. If your run abstains
+Point at <code>sources</code> — which chunks — and at <code>prompt</code> being, verbatim, what the
+model got. Stop there: do not hunt for the K row, that reveal is module 6's opening. If your run abstains
 instead of inventing a column, that is a better demo, not a worse one — read the fixed abstain string
 and point at <code>prompt</code> being a string, not <code>null</code>: the model was asked and
 declined.
@@ -166,10 +177,9 @@ nothing has been ingested since the api container started — the api forgets on
 the data in its volume.
 
 - **what you should see** — `ingest-q3` passes its assertions (`chunks` above 200, `vectorSize`
-  1024); `retrieve` returns exactly three `hits`; `query` returns a string in `debug.prompt`
+  1024); `retrieve` returns up to three `hits` (those above the 0.35 threshold); `query` returns a string in `debug.prompt`
 - **roughly how long** — `retrieve` is sub-second; `query` adds a few seconds of generation;
-  `ingest-q3` is the long one, dominated by `embed` over 294 chunks.
-  `UNVERIFIED: ingest wall time on participant laptops not measured — read it off your own stages.total`
+  `ingest-q3` is the long one, dominated by `embed` over 294 chunks — read the wall time off your own `stages.total`.
 
 Nothing is downloaded during the day. If `ingest-q3` fails with Ollama unreachable from inside the
 container, the Windows note in [setup](/modules/00-setup/) applies — `OLLAMA_HOST=0.0.0.0` — and you

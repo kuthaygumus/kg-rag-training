@@ -7,6 +7,11 @@ description: "Where the 294 chunks actually live, how to prove the container is 
 
 > **Where did those 294 chunks go — and can we look at them?**
 
+> **In the room:** Podman Desktop › Containers — two running, `chroma` healthy, no Ollama.
+> Terminal › `curl localhost:8000/api/v2/heartbeat` — one JSON object, one key: `nanosecond heartbeat`.
+> Bruno › `02-ingest` › `peek-chunks` — read `collection`, `total` (294), `returned` (15), then `chunks[].text`.
+> Find the `| K |` row and the table header row: they sit in different chunks, two apart.
+
 [Module 5](/modules/05-simple-rag/) ended with a grounded answer and a `sources` array. Somewhere
 between `/ingest` and `/query` the pipeline put 294 vectors *somewhere*, and `/retrieve` found three
 of them again. That somewhere is the second container. This module is short and entirely hands-on: prove it is there,

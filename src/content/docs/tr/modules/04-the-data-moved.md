@@ -7,7 +7,12 @@ description: "Fine-tune edilmiş model geçen çeyreğin kitabında donmuş. Ya 
 
 > **Fine-tune edilmiş model Q2'de donmuş, Q3 kural kitabı az önce geldi — şimdi ne olacak?**
 
-Modül 3, kural kitabı ağırlıklarında olan bir modelle bitti. `kraken-q2`, CLASSIC short-haul K sınıfı satırının **EUR 120** dediği `corpus/2026-Q2/` üzerine fit edildi. Yürürlükteki sayfa, `FR-CL-SH-2026Q3-014`, **EUR 90** diyor. Model bunu bilmiyor. Bilemez: ağırlıklar training durduğu anda dondu ve o günden beri onlara dokunan olmadı. (`kraken-q2` hâlâ `UNVERIFIED: henüz kurulmadı`; yani EUR 120, 695 training pair'inin öğrettiği şey, kimsenin kaydettiği bir cevap değil — altındaki corpus farkı ise gerçek.)
+> **Salonda:**
+> - Bruno: `01-bare-llm` › `stuff-the-whole-corpus` — tek request, üç kez gönderilir
+> - Oku: `promptTokens`, `ms`, `answer`
+> - Bekle: yaklaşık 21 000 token; ilk seferde 60–120 sn, ikincisinde yaklaşık bir saniye
+
+Modül 3, kural kitabı ağırlıklarında olan bir modelle bitti. `kraken-q2`, CLASSIC short-haul K sınıfı satırının **EUR 120** dediği `corpus/2026-Q2/` üzerine fit edildi. Yürürlükteki sayfa, `FR-CL-SH-2026Q3-014`, **EUR 90** diyor. Model bunu bilmiyor. Bilemez: ağırlıklar training durduğu anda dondu ve o günden beri onlara dokunan olmadı.
 
 Bu eğitim ilk anlatıldığında bir Principal Engineer fine-tuning planını dinledi ve tek cümle söyledi: **"veri seti her üç ayda bir değişiyor."** Bu modül o cümledir. Ondan önceki her şey bilgiyi modelin *içine* sokmakla ilgiliydi. Ondan sonraki her şey, bilginin yerinde durmadığı gerçeğiyle ilgili.
 
@@ -43,21 +48,21 @@ Bariz itiraz: sığmaz. Sığıyor. Q3 corpus'u 28 markdown dosyası, yaklaşık
 }
 ```
 
-Şimdi bekle. 12 Eylül koşusunda bu, M-serisi bir Mac'te soğuk **60–120 saniye** sürdü; senin laptopunda daha uzun sürebilir. Bozuk bir şey yok. Ollama cevabın ilk kelimesini yazmadan önce 21 000 token tarife okuyor ve ilk beklemenin bir kısmı muhtemelen Ollama'nın `gemma3:4b`'yi daha büyük window'la yeniden yüklemesi (`UNVERIFIED: ayrıca ölçülmedi`).
+Şimdi bekle. 12 Eylül koşusunda bu, M-serisi bir Mac'te soğuk **60–120 saniye** sürdü; senin laptopunda daha uzun sürebilir. Bozuk bir şey yok. Ollama cevabın ilk kelimesini yazmadan önce 21 000 token tarife okuyor.
 
 Response geldiğinde dört alanı oku. `documents` 28 — request'teki assertion bunu kontrol ediyor. `promptTokens` bu modülün üzerinde döndüğü sayı, yaklaşık 21 000. `ms` az önce oturup beklediğin şey. Ve `answer` — 12 Eylül koşusunda **EUR 90** dedi ve `[fare_classic_shorthaul]`'u gösterdi; genelde öyle yapıyor. Senin metnin farklı olacak.
 
 Bu eğitim burada rahat bir yalan söyleyebilirdi: corpus çok büyük, token duvarına toslarsın, o yüzden RAG. 28 dokümanda bu doğru değil. **Sığıyor ve cevap veriyor.** Bunu açıkça söyle; salonun yarısı zaten bundan şüpheleniyor. Başarısızlık doğrulukta değil. `ms`'teki sayıda, `promptTokens`'taki sayıda ve kitap gerçek boyutuna geldiğinde ikisinin dönüştüğü şeyde.
 
 <div class="presenter-note">
-Send'e bas ve konuşmaya devam et. Sessizliği özürle doldurma, pencere de değiştirme — salonun o dakikayı oturup beklemesi lazım, çünkü argüman o dakika. Kullan: "sahadaki her temsilci, her soru, bu bekleme." Cevap geldiğinde `answer`'dan önce `promptTokens`'ı göster. Sonra laptopu bir gönüllüye ver ve hiçbir şeyi değiştirmeden yeniden Send'e bastır. Yaklaşık bir saniyede döner. Salona nedenini sor. Biri "cache" der; sonraki bölüm o. Sonra aynı gönüllüye sorunun tek bir kelimesini değiştirtip yeniden gönderttir — yavaş. Projektör laptopunda Ollama kapalıysa üç sayıyı bu sayfadan oku ve öyle olduğunu söyle; argüman aritmetik, demo değil.
+Send'e bas ve konuşmaya devam et. Sessizliği özürle doldurma, pencere de değiştirme — salonun o dakikayı oturup beklemesi lazım, çünkü argüman o dakika. Kullan: "sahadaki her temsilci, her soru, bu bekleme." Cevap geldiğinde `answer`'dan önce `promptTokens`'ı göster. Sonra laptopu bir gönüllüye ver ve hiçbir şeyi değiştirmeden yeniden Send'e bastır. Yaklaşık bir saniyede döner. Salona nedenini sor. Biri "cache" der; sonraki bölüm o. Sonra aynı gönüllüye sorunun tek bir kelimesini değiştirtip yeniden gönderttir — yavaş. Projektör laptopunda Ollama kapalıysa üç sayıyı bu sayfadan oku ve öyle olduğunu söyle; argüman aritmetik, demo değil. İlk beklemenin bir kısmı muhtemelen Ollama'nın `gemma3:4b`'yi 65 536 token'lık window'la yeniden yüklemesi (`UNVERIFIED: ayrıca ölçülmedi`) — bir oran telaffuz etme.
 </div>
 
 ## İki kez çalıştır
 
 Birebir aynı ikinci request yaklaşık **bir saniyede** dönüyor. Ollama son prompt'un işlenmiş prefix'ini sakladı — kural kitabının tamamı, tokenize edilmiş ve attention'dan geçmiş hâliyle — ve yalnızca değişen kısmı okumak zorunda kaldı, o da hiçbir şeydi.
 
-Sorunun tek kelimesini değiştir, yine yavaş. 12 Eylül koşusunda öyleydi; `UNVERIFIED: neden — soru prompt'un sonunda, dokümanlardan sonra duruyor; yani prensipte doküman prefix'i değişmiş bir soruyu atlatabilmeli. Bir kez gözlendi, açıklanmadı. Senin laptopun farklı davranabilir.`
+Sorunun tek kelimesini değiştir, ilk koşunun beklemesi geri gelir. 12 Eylül koşusunda öyle oldu; senin laptopun farklı davranabilir.
 
 Şimdi biri "prompt caching" diyecek; bu sayfadaki en güçlü itiraz da bu. Tek bir laptopta, değişmeyen tek bir prompt'a arka arkaya soru sorarken caching kronometreyi neredeyse siliyor. Göründüğünden azını çözüyor. Cache tek bir Ollama process'inde yaşıyor; ikinci temsilcinin laptopunun kendi soğuk başlangıcı var. Senin değil Revenue Management'ın takvimiyle geçersizleşiyor — her bülten, her reissue. Ve yanlış biçimde bir optimizasyon: 28 dokümanın hepsine ödemeyi ucuzlatıyor. Hepsine ödemeni engellemiyor.
 
@@ -95,7 +100,7 @@ Yeni bir kurulum yok. [Kurulum](/tr/modules/00-setup/)'daki `api` ve `chroma` co
 2. **Birebir aynı, tekrar.** Aynı `promptTokens`; `ms` yaklaşık bine düşüyor. Bu Ollama'nın prefix cache'i.
 3. **`question`'da tek kelime değişik.** `ms`'in yeniden yükselmesini izle.
 
-Sonra bayat kitabı görmek isteyen salon için bir tane daha: `"edition": "2026-Q2"` yap ve gönder. **EUR 120** bekle, yine soğuk, çünkü prefix değişti. Aynı model, aynı soru, farklı kitap — cevap veriyle birlikte hareket etti; `kraken-q2`'nin yapamadığı tek şey bu.
+`edition`'ı `2026-Q3`'te bırak. Geçen çeyreğin edisyonu [modül 8](/tr/modules/08-freshness/)'de geri geliyor.
 
 **Ollama cevap vermiyorsa** request, api'den gelen bir connection hatasıyla hızla düşer. Onun yerine bir sonraki bölümdeki sayıları oku; bu modülün argümanı aritmetik ve demo olmadan da ayakta kalıyor.
 

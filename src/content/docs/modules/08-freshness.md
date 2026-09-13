@@ -7,7 +7,12 @@ description: "The same question against last quarter's rule book and this quarte
 
 > **Module 3's fine-tuned model is frozen on Q2. Why is everything we built in modules 5–7 better than fine-tuning?**
 
-Be honest about where the day stands. Module 3 showed a model that had the rule book in its weights — `kraken-q2`, a LoRA fine-tune on `corpus/2026-Q2/`, `UNVERIFIED: not built yet, shown as a trainer demo`. Modules 5–7 built something far clumsier: a container, an embedding model, a chunker that had to be fixed twice before it found the K row. A fair sceptic in the room should be asking why the clumsy thing wins.
+> **In the room:** Bruno › `06-freshness` › `1-ingest-q2` → `2-query-q2` → `3-ingest-q3` → `4-query-q3`.
+> Steps 1 and 3 — read `documents`: 21, then 28; `chunks`: 120, then 132.
+> Steps 2 and 4 — read `answer`: EUR 120, then EUR 90; `sources[0].source` is `fare_classic_shorthaul` both times.
+> Step 3 — read `stages.total`: the whole cost of the "retrain", in milliseconds.
+
+Be honest about where the day stands. Module 3 showed a model that had the rule book in its weights — `kraken-q2`, a LoRA fine-tune on `corpus/2026-Q2/`. Modules 5–7 built something far clumsier: a container, an embedding model, a chunker that had to be fixed twice before it found the K row. A fair sceptic in the room should be asking why the clumsy thing wins.
 
 It wins on one axis, and the axis is time. **A fine-tuned model knows what the documents said on the day you trained it. A RAG pipeline knows what they say now.** This module makes that sentence into four requests and two numbers.
 
@@ -134,7 +139,7 @@ A team that wants the model to *speak* like Kraken Air's agents — the phrasing
 | the number at stake | Q2 sheet EUR 120, Q3 sheet EUR 90; no-show 240 → 180 with it |
 | Q2 edition, `structure` + `stripBoilerplate` | on the 12 Sep run the answer was EUR 120 — your wording will differ |
 | Q3 edition, same configuration | EUR 90 `[fare_classic_shorthaul]` on the same run |
-| Q3 chunks, `structure-1500` + strip | 132 (trainer-side count; the Q2 edition has fewer documents and fewer chunks — `UNVERIFIED: Q2 count not recorded`) |
+| chunks, `structure-1500` + strip | Q3 132 from 28 documents; Q2 120 from 21 documents (Q2 count measured 13 Sep, trainer side) |
 | what `DELTA.md` says moved | 1 fare cell (and its derived no-show), 1 SOP status flip, 3 policy version bumps, 7 new documents, every edition stamp and id |
 
 </div>

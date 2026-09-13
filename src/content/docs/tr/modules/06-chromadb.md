@@ -7,6 +7,11 @@ description: "294 chunk gerçekte nerede yaşıyor, container'ın ayakta olduğu
 
 > **O 294 chunk nereye gitti — ve onlara bakabilir miyiz?**
 
+> **Salonda:** Podman Desktop › Containers — iki çalışan, `chroma` healthy, Ollama yok.
+> Terminal › `curl localhost:8000/api/v2/heartbeat` — tek JSON nesnesi, tek anahtar: `nanosecond heartbeat`.
+> Bruno › `02-ingest` › `peek-chunks` — `collection`, `total` (294), `returned` (15), sonra `chunks[].text`'i oku.
+> `| K |` satırını ve tablo başlık satırını bul: farklı chunk'lardalar, arada iki chunk var.
+
 [Modül 5](/tr/modules/05-simple-rag/) grounded bir cevap ve bir `sources` dizisiyle bitti.
 `/ingest` ile `/query` arasında bir yerde pipeline 294 vektörü *bir yere* koydu ve `/retrieve`
 onlardan üçünü yeniden buldu. O yer ikinci container. Bu modül kısa ve baştan sona hands-on: orada

@@ -5,7 +5,7 @@ template: splash
 hero:
   tagline: Every concept earns its place by breaking the one before it.
   actions:
-    - text: Setup — start here
+    - text: Before we start — begin here
       link: /modules/00-setup/
       icon: right-arrow
     - text: The lab repository
@@ -17,16 +17,17 @@ hero:
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
 > **Kraken Air (XX) and Wyvern Overseas Airways (YY) are fictional airlines**, and their codes
-> belong to no real carrier. Every document, fare, penalty, flight number and rule in the corpus
-> is synthetic, written for teaching. No Amadeus system, customer or production data is used
-> anywhere in this repository. This is the site's full statement; every other page carries the
-> short reminder in its footer.
+> belong to no real carrier. Every document the model will read in this course — fare rules,
+> bulletins, call-centre texts — is synthetic, written for teaching. No Amadeus system, customer or
+> production data is used anywhere in this repository. This is the site's full statement; every
+> other page carries the short reminder in its footer.
 
-## Three things to install — before the day
+## 3 things to install before we start
 
-The whole practical part runs from one small repository you clone, two containers you start, and
-a request collection you click through. Install these three at home, on a connection you are not
-sharing with twenty other people, and pull the two models while you are there:
+The whole practical part is one small repository you clone, two containers you start, and a
+request collection you click through. Install these three and pull the two models — ideally
+beforehand: the models are 4.5 GB, and starting on the office network in the morning will not be
+done by 09:10.
 
 | | Why | Get it |
 |---|---|---|
@@ -34,24 +35,25 @@ sharing with twenty other people, and pull the two models while you are there:
 | **Podman Desktop** | runs ChromaDB and the lab's API as containers | [podman-desktop.io](https://podman-desktop.io) |
 | **Bruno** | the request collection that is the day's handout | [usebruno.com/downloads](https://www.usebruno.com/downloads) |
 
-No API key, no cloud account, no sign-in, no Python. [Setup](/modules/00-setup/) walks every step
-and ends on one request that says `ready`.
+No API key, no cloud account, no sign-in, no Python. [Before we start](/modules/00-setup/) walks
+every step and ends on one request that says `ready`.
 
 ## The rule this course is built on
 
 No concept is introduced before you have **seen the failure that requires it**. Each module opens
-on the previous one's wall; module 2 is the one declared exception, and says so on its own page —
-it exists to earn one sentence that three later gates spend.
+on the previous one's wall; module 2 is the one declared exception, and says so on its own page.
 
-**bare LLM** → *it answers about our airline, confidently, with no source — and it is wrong* →
-**what a weight is** → *a weight is a frozen photograph of the training data* → **fine-tuning** →
-*we can re-take the photograph with our data — and it is of last quarter, and it cites nothing* →
-**the data moved** → *put the whole rule book in the prompt: it fits, and you pay for the whole
-book, in tokens and in seconds, on every question* → **simple RAG** → *hand it the right piece:
-the answer is grounded — now look at what was actually retrieved* → **ChromaDB** → *the chunks
-are visible, and the one with the number has lost its header* → **chunking and noise** → *cut at
-the document's own structure: same model, same store, right answer* → **freshness** → *re-ingest
-last quarter's edition and this quarter's: 120 → 90 with no retraining* → **closing**.
+| Stage | What broke |
+|---|---|
+| **1 · The bare LLM** | It answers about our airline, confidently, with no source — and it is wrong |
+| **2 · What a weight is** | A weight is a frozen photograph of the training data |
+| **3 · Fine-tuning** | We can re-take the photograph with our data — and it is of last quarter, and it cites nothing |
+| **4 · The data moved** | Put the whole rule book in the prompt: it fits, and you pay for the whole book on every question |
+| **5 · Simple RAG** | Hand it the right piece: the answer is grounded — now look at what was actually retrieved |
+| **6 · ChromaDB** | The chunks are visible, and the one with the number has lost its header |
+| **7 · Chunking and noise** | Cut at the document's own structure: same model, same store, right answer |
+| **8 · Freshness** | Re-ingest last quarter's edition and this quarter's: 120 → 90 with no retraining |
+| **9 · Closing** | Rewind the chain |
 
 <CardGrid>
   <Card title="It runs local" icon="laptop">
@@ -74,20 +76,29 @@ last quarter's edition and this quarter's: 120 → 90 with no retraining* → **
 
 ## How the day runs
 
-Theory modules — how a neural network learns, how a model is trained and fine-tuned — are driven
-by the trainer from the projector; there is nothing to run on your laptop for them. Practical
-modules send you to **Bruno**: the page names a folder and a request, you run it, and the
-response is the lesson. Each request has a *Docs* tab with the gate question and what to look for.
+- **Theory** (modules 2 and 3) — the trainer drives from the projector; you run nothing.
+- **Practice** — the page names a folder and a request in **Bruno**; you send it, and the response is the lesson. Each request's *Docs* tab says what to look for.
+- **Three surfaces** — Bruno · a terminal at the root of `amadeus-rag-lab` · Podman Desktop. Every command block says which one it belongs to.
 
-There are exactly three surfaces, and every command fence on this site says which one it belongs
-to: **Bruno** (a folder and a request in the `amadeus-rag-lab` collection), a **terminal at the
-repository root of `amadeus-rag-lab`** (for `ollama …`, `podman …` and `curl …`), and **Podman
-Desktop** (to see the two containers). Retrieval quality numbers — `hit@1`, `recall@5`, `MRR` over
-the twenty gold questions — are measured by the trainer with `npm run eval` and quoted on the
-pages where they matter; nobody in the room runs a benchmark.
+Retrieval quality numbers (`hit@1`, `recall@5`) are measured by the trainer and quoted where they matter; nobody in the room runs a benchmark.
 
-The day is 7 October 2026, 09:00–15:00. Setup is pre-work, done at home the evening before.
+| Time | Module | You |
+|---|---|---|
+| 09:00 | Opening · setup check | Bruno `00-health` |
+| 09:20 | 1 · The bare LLM | Bruno |
+| 09:32 | 2 · Neural network | watch |
+| 09:52 | 3 · Fine-tuning | watch |
+| 10:17 | *Break* | |
+| 10:32 | 4 · The data moved | Bruno |
+| 10:47 | 5 · Simple RAG | Bruno |
+| 11:27 | 6 · ChromaDB | Podman Desktop · terminal · Bruno |
+| 11:47 | 7 · Chunking and noise | Bruno |
+| 12:17 | *Lunch* | |
+| 13:17 | 8 · Freshness | Bruno |
+| 13:42 | Free exploration | Bruno, your own questions |
+| 14:12 | What the day left out | watch |
+| 14:35 | 9 · Closing | |
 
-Start at [Setup](/modules/00-setup/); every term the day uses is defined once in the
+Start at [Before we start](/modules/00-setup/); every term the day uses is defined once in the
 [glossary](/reference/glossary/), and what the day deliberately leaves out — hybrid retrieval,
 reranking, agentic RAG — is in [Going further](/reference/going-further/).

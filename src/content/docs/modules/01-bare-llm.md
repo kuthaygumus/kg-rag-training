@@ -11,11 +11,40 @@ description: "One request to the model on its own: it answers the Kraken Air pen
 Before anyone clicks, put the question on screen and make the room commit: will a 4B model answer the Kraken Air penalty question, or refuse? Show of hands, count it out loud, write the two numbers on the board. Most rooms split. The request settles it in one click — it answers, with a number — and the refuse camp's surprise is what carries the module. Two minutes for this, no more.
 </div>
 
-A model on the laptop. No retrieval, no documents, nothing but the weights. We ask it the one question this whole day is built around — the one a Kraken Air call-centre agent gets ten times a shift:
+> **In the room:** Bruno — `01-bare-llm` › `ask-about-kraken`. Read `answer`. Expect a confident, specific amount with no source — and not EUR 90.
+
+## The data we have
+
+Kraken Air is a fictional airline, and its rule book is the `corpus/` folder of the repository you cloned: **28 markdown documents**, the kind a call centre works from every day.
+
+- 6 fare sheets — `fare_classic_*`, `fare_flex_*`, `fare_lite_*`, each in a short-haul and a long-haul version
+- 6 operations bulletins — `bulletin_*`
+- 6 call-centre macros — four `macro_tr_*` in Turkish, two `macro_en_*` in English
+- 4 standard operating procedures — `sop_*`
+- 3 company travel policies — `policy_*`
+- the interline and codeshare agreements with Wyvern Overseas, and a general FAQ
+
+It comes in **two editions**: `corpus/2026-Q2/` is last quarter's rule book (21 documents) and `corpus/2026-Q3/` is the one in force now (28 — seven were added). Same book, three months apart; `corpus/DELTA.md` lists exactly what changed. The trainer opens the folder on the projector now; you can look in your own clone whenever you like:
+
+**Terminal (repo root of `amadeus-rag-lab`):**
+
+```bash
+ls corpus/2026-Q3
+```
+
+<div class="presenter-note">
+Thirty seconds, projector: open <code>corpus/2026-Q3/</code> in VS Code or Finder, open <code>fare_classic_shorthaul.md</code>, scroll to RULE 2A, point at the K row. Then open <code>2026-Q2/</code>'s copy beside it — same row, EUR 120. Do not explain editions further; module 8 spends them. The room just needs to have seen that the data is a folder of readable files.
+</div>
+
+## The question
+
+The one question this whole day is built around — the one a Kraken Air call-centre agent gets ten times a shift:
 
 > Passenger wants to cancel a short-haul Europe ticket, CLASSIC fare, booking class K. How much is the cancellation penalty per passenger?
 
-The real figure is in `corpus/2026-Q3/fare_classic_shorthaul.md`, RULE 2A table, row K: **EUR 90**, a flat amount per passenger, not a percentage. Last quarter the same row said EUR 120. Kraken Air is fictional — there is no website, no forum thread, no press release the model could have read. It has never seen this number.
+The real figure is in `corpus/2026-Q3/fare_classic_shorthaul.md`, RULE 2A table, row K: **EUR 90**, a flat amount per passenger, not a percentage. Last quarter's edition said EUR 120.
+
+Now the model, on its own. No retrieval, no documents, nothing but the weights. Kraken Air is fictional — there is no website, no forum thread, no press release the model could have read. It has never seen this number.
 
 Run the request and read the `answer` field. There is no recorded transcript on this page on purpose: the model is `gemma3:4b`, it runs at `temperature: 0`, and it will still say something different on your machine than it did on the trainer's. **What does not change is the shape of the reply — confident, specific, unsourced, and wrong.** On the 12 Sep run it named an amount of the "€50" kind, stated as fact, in one clean sentence. Your number will differ. That it differs is the point: a model that held the fact would say EUR 90 every time, on every laptop.
 
@@ -28,7 +57,7 @@ Now change the question. Anything about the two airlines:
 - what the Kraken Air lounge in Istanbul is called
 - the no-show penalty for the same K ticket
 
-It will answer every one of them, in the same register, and none of it exists anywhere except in the reply you are reading. The one that stings: the no-show penalty *is* in the same table, two columns to the right of the cancellation penalty — EUR 180 — and the model has no more access to that cell than to any other.
+It will answer every one of them, in the same register, and none of it exists anywhere except in the reply you are reading. The one that stings: the no-show penalty *is* in the same table, one column to the right of the cancellation penalty — EUR 180 — and the model has no more access to that cell than to any other.
 
 <div class="presenter-note">
 Someone will be typing the same question into a bigger model to show it does better. Let them — a frontier model is more likely to hedge, and it still cannot know that this quarter's number is 90 and not 120, because no model has read a document that did not exist when it was trained. Move the argument there, do not defend the 4B model.

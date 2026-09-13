@@ -7,7 +7,12 @@ description: "Aynı soru, geçen çeyreğin kural kitabına ve bu çeyreğinkine
 
 > **Modül 3'ün fine-tune edilmiş modeli Q2'de donmuş. Modül 5–7'de kurduğumuz her şey fine-tuning'den neden daha iyi?**
 
-Günün nerede durduğu konusunda dürüst ol. Modül 3, kural kitabını ağırlıklarında taşıyan bir model gösterdi — `kraken-q2`, `corpus/2026-Q2/` üzerinde bir LoRA fine-tune, `UNVERIFIED: henüz kurulmadı, trainer demo'su olarak gösteriliyor`. Modül 5–7 ise çok daha hantal bir şey kurdu: bir container, bir embedding modeli, K satırını bulabilmesi için iki kez düzeltilmesi gereken bir chunker. Salondaki adil bir şüphecinin sorması gereken soru şu: hantal olan neden kazanıyor?
+> **Salonda:** Bruno › `06-freshness` › `1-ingest-q2` → `2-query-q2` → `3-ingest-q3` → `4-query-q3`.
+> 1. ve 3. adım — `documents`'ı oku: 21, sonra 28; `chunks`: 120, sonra 132.
+> 2. ve 4. adım — `answer`'ı oku: EUR 120, sonra EUR 90; `sources[0].source` her ikisinde de `fare_classic_shorthaul`.
+> 3. adım — `stages.total`'ı oku: "retrain"in bütün maliyeti, milisaniye cinsinden.
+
+Günün nerede durduğu konusunda dürüst ol. Modül 3, kural kitabını ağırlıklarında taşıyan bir model gösterdi — `kraken-q2`, `corpus/2026-Q2/` üzerinde bir LoRA fine-tune. Modül 5–7 ise çok daha hantal bir şey kurdu: bir container, bir embedding modeli, K satırını bulabilmesi için iki kez düzeltilmesi gereken bir chunker. Salondaki adil bir şüphecinin sorması gereken soru şu: hantal olan neden kazanıyor?
 
 Tek bir eksende kazanıyor ve o eksen zaman. **Fine-tune edilmiş bir model, dokümanların onu eğittiğin gün ne dediğini bilir. Bir RAG pipeline'ı şu an ne dediklerini bilir.** Bu modül o cümleyi dört request'e ve iki sayıya çeviriyor.
 
@@ -134,7 +139,7 @@ Modelin Kraken Air temsilcileri gibi *konuşmasını* isteyen bir ekip — ifade
 | söz konusu sayı | Q2 sayfası EUR 120, Q3 sayfası EUR 90; beraberinde no-show 240 → 180 |
 | Q2 edition, `structure` + `stripBoilerplate` | 12 Eylül koşusunda cevap EUR 120 idi — senin cümlen farklı olacak |
 | Q3 edition, aynı konfigürasyon | aynı koşuda EUR 90 `[fare_classic_shorthaul]` |
-| Q3 chunk sayısı, `structure-1500` + strip | 132 (trainer tarafı sayım; Q2 edition'ında daha az doküman ve daha az chunk var — `UNVERIFIED: Q2 sayısı kaydedilmedi`) |
+| chunk sayısı, `structure-1500` + strip | Q3 28 dokümandan 132; Q2 21 dokümandan 120 (Q2 sayısı 13 Eylül'de ölçüldü, trainer tarafı) |
 | `DELTA.md`'ye göre ne değişti | 1 fare hücresi (ve ondan türeyen no-show), 1 SOP durum değişimi, 3 policy versiyon artışı, 7 yeni doküman, her edition damgası ve id |
 
 </div>

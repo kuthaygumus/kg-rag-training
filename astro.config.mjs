@@ -5,8 +5,8 @@ import { satteri } from '@astrojs/markdown-satteri';
 
 /** Module spine — mirrors the GATE chain. Each entry is one stage of the day. */
 const modules = [
-  ['00-setup',              '0. Setup — Before You Arrive',        '0. Kurulum — Gelmeden Önce'],
-  ['01-bare-llm',           '1. The Bare LLM Wall',                '1. Çıplak LLM Duvarı'],
+  ['00-setup',              'Before we start',                     'Başlamadan önce'],
+  ['01-bare-llm',           '1. The Bare LLM Wall',                '1. Yalın LLM Duvarı'],
   ['02-neural-net',         '2. How a Neural Network Learns',      '2. Sinir Ağı Nasıl Öğrenir'],
   ['03-finetune',           '3. Fine-Tuning: Your Own Model',      '3. Fine-Tuning: Kendi Modelin'],
   ['04-the-data-moved',     '4. The Data Moved',                   '4. Veri Değişti'],

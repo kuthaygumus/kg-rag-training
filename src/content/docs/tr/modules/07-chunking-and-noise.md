@@ -7,6 +7,11 @@ description: "Retriever yanlış dilimi getirdi. Modeli değil, kesimi düzelt."
 
 > **Doğru doküman geldi, cevap yine yanlıştı. Neyi değiştiriyoruz — modeli mi, kesimi mi?**
 
+> **Salonda:** Bruno › `05-chunking-and-noise` › `1-reingest-structure` → `2-peek-again` → `3-query-again`.
+> 1. adım — `chunks`'ı oku: 132, 294'tü; `collection` `-structure-1500-strip` ile bitiyor.
+> 2. adım — `| K |` chunk'ı artık `[fare classic shorthaul > RULE 2A …]` ile başlıyor ve başlık satırını tutuyor.
+> 3. adım — `answer`'ı oku: EUR 90, `[fare_classic_shorthaul]` kaynak gösterilmiş.
+
 [Modül 6](/tr/modules/06-chromadb/) chunk'lar ekrandayken bitti. `fare_classic_shorthaul.md`
 birinci sıradaydı — isabet — ve K satırını tutan chunk, sütunları isimlendiren satırı
 tutmuyordu. Model `EUR 70 | EUR 90 | EUR 180` okudu, hangi sütun ne bilmeden yanlış olandan cevap
@@ -41,7 +46,7 @@ zaten production'da bunu kullanıyor.
 
 **`structure`** — dokümanın kendi başlıklarından kes: `#` satırları, `RULE n.`, `SECTION n`,
 `Step n.`. Kural, tanıttığı tabloyla birlikte kalır. Sonra her chunk'ın başına nereden geldiği
-yazılır — `[doküman adı > başlık]`; doküman adı, alt çizgileri boşluğa çevrilmiş dosya adı. Çıplak
+yazılır — `[doküman adı > başlık]`; doküman adı, alt çizgileri boşluğa çevrilmiş dosya adı. Yalın
 bir sayı ızgarası etiketiyle gelir:
 
 ```
@@ -131,8 +136,8 @@ kez birlikte verildiğini görmek istersen `debug.prompt`'a bak.
 <div class="presenter-note">
 Otuz dakika, beşi canlı istek: 1 yavaş olan (132 chunk embed ediyor — <code>stages.embed</code>
 değerini yüksek sesle oku), 2 ve 3 saniyelik. 2. adımda <code>| K |</code> chunk'ını göstermeden
-önce sor: "modül 6'da satır kurtulmuştu — o zaman cevap neden yanlıştı?" On beş saniye sessizlik,
-sonra biri "header" diyecek. Katılımcıdan gelince on kat daha sert oturuyor. Ollama kapalıysa
+önce tek cümlelik hatırlatma yeter — salon header'sız K satırını modül 6'da zaten kendisi buldu.
+Ollama kapalıysa
 <code>/ingest</code> embed edemez ve modülün canlı ayağı kalmaz — sayfayı oku, sonra kendi
 makinende repo kökünde <code>npm test</code> çalıştır: <code>test/chunking.test.ts</code> model
 istemiyor ve tam olarak bunu assert ediyor — fixed testi K satırı chunk'ında "Cancellation penalty"
@@ -172,8 +177,8 @@ Mac'te birer koşum, 12 Eylül 2026; sayılar başka makinelerde kayar.
 
 Dürüst oku. **Structure-aware chunking doğru dokümanı daha sık bulmuyor** — beş satırın üçünde
 hit@1 0.700 ve temizlenmiş index bir soru aşağıda. Düzelttiği şey **chunk**: K satırı header'ıyla
-birlikte, ki kendinden emin yanlış tutarı EUR 90'a çeviren şey bu. Doküman seviyesindeki bir skor
-bunu göremez; 2. adım görür.
+birlikte — fixed-280 ile model ya "bilmiyorum" dedi ya yanlış sütunu okudu; structure ile EUR 90.
+Doküman seviyesindeki bir skor bunu göremez; 2. adım görür.
 
 Tablonun söylediği iki şey var. Overlap her metrikte aynı anda kaybediyor ve bunun için 74 chunk
 fazladan ödüyor. Ve en iyi recall@5, en parçalanmış index'e ait: daha çok küçük parça, gold

@@ -240,7 +240,7 @@ otel eşiği; chunk'lar modele ulaşmadan önce sürüme göre filtrele — sır
 değil, tool'un bir özelliği olarak. **Hiç bitmeyen döngü** — yeterlilik kontrolü her zaman "hâlâ bir
 şey eksik" diyebiliyorsa der. Dört yerden sınırla: sert bir tur sınırı, alt soru sayısına sınır, bir
 tur yeni bir şey getirmiyorsa dur, ve son turda elindekiyle cevap verip bulamadığını *söyle*. Dürüst
-bir kısmi cevap sonsuz döngüden de, modül 1'de çıplak modelin ürettiği kendinden emin uydurmadan da
+bir kısmi cevap sonsuz döngüden de, modül 1'de yalın modelin ürettiği kendinden emin uydurmadan da
 iyidir.
 
 Ve bütün kursun taşıdığı çekince: yukarıdaki her metrik **retrieval**'ı puanlıyor — doğru doküman
