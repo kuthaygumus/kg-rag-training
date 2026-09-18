@@ -99,14 +99,14 @@ answer is gone. That is a deploy you can schedule, roll back and diff. A fine-tu
 
 Everything the day ran is still there, and none of it needs the network:
 
-- the `amadeus-rag-lab` clone — corpus, both editions, `corpus/DELTA.md`, the TypeScript pipeline in
+- the `kg-rag-lab` clone — corpus, both editions, `corpus/DELTA.md`, the TypeScript pipeline in
   `src/pipeline.ts`, and the trainer's eval in `eval/`;
 - two containers — `chroma` with its named volume (your last collection is still in it) and the
   built `api` image. `podman compose up` without `--build` brings them back as they were;
 - the Bruno collection, folders `00-health` to `06-freshness`, every request body as you left it;
 - the two Ollama models on the host.
 
-On Monday, with no network: start Ollama, **Terminal (repo root of `amadeus-rag-lab`)** →
+On Monday, with no network: start Ollama, **Terminal (repo root of `kg-rag-lab`)** →
 `podman compose up`, open Bruno, send **Bruno — `00-health` › `health`**. If it returns, the rest of
 the collection runs. Change one document in `corpus/2026-Q3/`, re-ingest, ask again — that is the
 whole loop, and now it is yours.

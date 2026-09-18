@@ -10,7 +10,7 @@ bile göremezsin. Sitede bunu ele veren **görünür hiçbir kontrol yok**: kat�
 keşfetmesin diye bilerek böyle. Yani sana hatırlatacak tek yer bu blok.
 
 - **Aç:** `Alt+Shift+P` — ya da herhangi bir sayfanın URL'sine `?presenter=1` ekle, örneğin
-  `https://amadeus-rag-training.vercel.app/tr/modules/00-setup/?presenter=1`
+  `https://kg-rag-training.vercel.app/tr/modules/00-setup/?presenter=1`
 - **Kapat:** tekrar `Alt+Shift+P` — ya da `?presenter=0`
 - **Açık olduğunu nereden bilirsin:** köşede `PRESENTER MODE · Alt+Shift+P` rozeti belirir
 - **Hatırlanıyor:** `localStorage` → `rag-training-presenter`, gün boyu, sayfa sayfa değil
@@ -102,12 +102,12 @@ ollama list               # ikisini de görmelisin; başka model koyma, cevaplar
 **Terminal (repo kökü buradan çıkıyor):**
 
 ```bash
-git clone https://github.com/kuthaygumus/amadeus-rag-lab
-cd amadeus-rag-lab
+git clone https://github.com/kuthaygumus/kg-rag-lab
+cd kg-rag-lab
 podman compose up --build     # ilk sefer: api imajını build eder (~1 dk), chromadb'yi çeker
 ```
 
-git yoksa ZIP: https://github.com/kuthaygumus/amadeus-rag-lab/archive/refs/heads/main.zip —
+git yoksa ZIP: https://github.com/kuthaygumus/kg-rag-lab/archive/refs/heads/main.zip —
 çıkart, klasöre `cd` yap, gerisi aynı.
 
 İki container ayağa kalkıyor: `chroma` (:8000) ve `api` (:3000). **Ollama container değil** —
@@ -119,7 +119,7 @@ host'ta kalıyor (GPU ve indirdiğin modeller orada); api ona `http://host.conta
 `down` container'ları siliyor, imajları ve `chroma-data` volume'unu tutuyor — `-v` ekleme, son
 collection'ın o volume'da. Sonraki açılışlarda `--build` gerekmiyor: `podman compose up`.
 
-**Bruno:** Bruno'yu aç → *Open Collection* → clone'un **içindeki** `bruno/amadeus-rag-lab`
+**Bruno:** Bruno'yu aç → *Open Collection* → clone'un **içindeki** `bruno/kg-rag-lab`
 klasörünü seç (repo kökünü değil, `bruno/`'yu değil) → sağ üstten environment **`local`** →
 soldan **`00-health` › `health`** → Send.
 
@@ -244,10 +244,10 @@ bir dokümanı değiştir, yeniden ingest et, yeniden sor — bütün döngü bu
 
 ---
 
-Site: https://amadeus-rag-training.vercel.app/tr/
-Lab (clone'ladığın repo): https://github.com/kuthaygumus/amadeus-rag-lab
-Site kaynağı: https://github.com/kuthaygumus/amadeus-rag-training
+Site: https://kg-rag-training.vercel.app/tr/
+Lab (clone'ladığın repo): https://github.com/kuthaygumus/kg-rag-lab
+Site kaynağı: https://github.com/kuthaygumus/kg-rag-training
 
 *Kraken Air (XX) ve Wyvern Overseas Airways (YY) kurgusal havayollarıdır. `corpus/` altındaki her
-doküman sentetik eğitim materyalidir; hiçbir Amadeus sistemi, müşterisi ya da production verisi bu
+doküman sentetik eğitim materyalidir; hiçbir gerçek havayolu sistemi, müşterisi ya da production verisi bu
 materyalin hiçbir yerinde geçmez.*

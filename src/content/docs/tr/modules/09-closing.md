@@ -100,7 +100,7 @@ değil.
 
 Bugün çalışan her şey hâlâ orada ve hiçbiri network istemiyor:
 
-- `amadeus-rag-lab` clone'u — corpus, iki edisyon, `corpus/DELTA.md`, `src/pipeline.ts` içindeki
+- `kg-rag-lab` clone'u — corpus, iki edisyon, `corpus/DELTA.md`, `src/pipeline.ts` içindeki
   TypeScript pipeline, ve eğitmenin `eval/` altındaki eval'ı;
 - iki container — named volume'üyle `chroma` (son collection'ın hâlâ içinde) ve build edilmiş `api`
   imajı. `--build` olmadan `podman compose up` ikisini bıraktığın gibi geri getirir;
@@ -108,7 +108,7 @@ Bugün çalışan her şey hâlâ orada ve hiçbiri network istemiyor:
   bıraktığın gibi;
 - host'taki iki Ollama modeli.
 
-Pazartesi, network yokken: Ollama'yı başlat, **Terminal (`amadeus-rag-lab` repo kökü)** →
+Pazartesi, network yokken: Ollama'yı başlat, **Terminal (`kg-rag-lab` repo kökü)** →
 `podman compose up`, Bruno'yu aç, **Bruno — `00-health` › `health`** gönder. Cevap geliyorsa
 collection'ın geri kalanı çalışır. `corpus/2026-Q3/` içinde bir dokümanı değiştir, yeniden ingest
 et, yeniden sor — bütün döngü bu, ve artık senin.

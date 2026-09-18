@@ -31,7 +31,7 @@ three strategies yet — let step 1's <code>chunks</code> count be the first sur
 
 ## Three ways to cut, cheapest first
 
-All three live in `src/chunking.ts` of `amadeus-rag-lab`, and `/ingest` picks one by name.
+All three live in `src/chunking.ts` of `kg-rag-lab`, and `/ingest` picks one by name.
 
 **`fixed`** — cut every N characters, blind to what is there. Default 280. This is what
 [module 5](/modules/05-simple-rag/) ingested with, and it is the villain: a table row is rarely
@@ -163,7 +163,7 @@ model still has to read it.
 
 <div class="measured">
 
-Trainer-side only — `npm run eval` in the `amadeus-rag-lab` repo, not something participants
+Trainer-side only — `npm run eval` in the `kg-rag-lab` repo, not something participants
 run. 20 gold questions, edition 2026-Q3, embedder `bge-m3`, scored at **document** level (the
 best chunk of a document counts as a hit for that document). One run each on an M-series Mac,
 12 Sep 2026; numbers drift on other machines.

@@ -7,10 +7,10 @@ description: "Üç program, iki model, bir git clone. Sonunda Bruno'da tek bir i
 
 ## Bu sitedeki her komut nereye yazılıyor
 
-Bu bölümü bir kez oku, günün geri kalanında tahmin etmen gereken hiçbir şey kalmasın. Tam olarak **üç yüzey** var ve üçünün de çıpası, birazdan clone'layacağın klasör: `amadeus-rag-lab`, yani içinde `compose.yaml`, `bruno/`, `corpus/` ve `src/` bulunan klasör.
+Bu bölümü bir kez oku, günün geri kalanında tahmin etmen gereken hiçbir şey kalmasın. Tam olarak **üç yüzey** var ve üçünün de çıpası, birazdan clone'layacağın klasör: `kg-rag-lab`, yani içinde `compose.yaml`, `bruno/`, `corpus/` ve `src/` bulunan klasör.
 
 1. **Bruno.** Tıklayarak ilerlediğin istek koleksiyonu. Her modül bir klasör ve bir istek adı veriyor — **Bruno — `01-bare-llm` › `ask-about-kraken`** — sen sol panelden seçip oka basıyorsun. Her isteğin cevapta neye bakacağını söyleyen bir *Docs* sekmesi var.
-2. **Terminal, repo kökünde.** `amadeus-rag-lab` içine `cd` yapılmış tek bir terminal penceresi, gün boyunca açık kalıyor. Bu sitedeki her `ollama …`, `podman compose …` ve `curl …` burada çalışıyor.
+2. **Terminal, repo kökünde.** `kg-rag-lab` içine `cd` yapılmış tek bir terminal penceresi, gün boyunca açık kalıyor. Bu sitedeki her `ollama …`, `podman compose …` ve `curl …` burada çalışıyor.
 3. **Podman Desktop.** İki container'ı, loglarını ve durumlarını gösteren pencere. Tıkladığından çok bakıyorsun.
 
 Bu sitenin her sayfasında her komut bloğunun hemen üstünde, kalın harflerle, hangi yüzeye ait olduğu yazıyor; yani hiçbir zaman kendin çıkarmak zorunda kalmıyorsun.
@@ -37,7 +37,7 @@ ollama --version
 
 **Windows, yönetici hakkı olmadan.** `OllamaSetup.exe` per-user bir kurulum: binary'ler `%LOCALAPPDATA%\Programs\Ollama` altına gidiyor, elevation istemiyor, sunucu senin oturumunla başlıyor.
 
-*Kullanıcı düzeyinde kurulumu gerçek bir Amadeus Windows laptopunda henüz doğrulamadık.* Kurulum senden yönetici parolası isterse orada dur — günün sabahı 09:00'da IT'yle tartışmak yerine önceden haber ver, makinesi yeşil olan biriyle eşleştirilirsin.
+*Kullanıcı düzeyinde kurulumu yönetilen bir kurumsal Windows laptopunda henüz doğrulamadık.* Kurulum senden yönetici parolası isterse orada dur — günün sabahı 09:00'da IT'yle tartışmak yerine önceden haber ver, makinesi yeşil olan biriyle eşleştirilirsin.
 
 Installer Ollama'yı kullanıcı PATH'ine ekliyor ama o sırada zaten açık olan bir terminal bunu görmüyor. `ollama --version` "komut bulunamadı" diyorsa, bir sonuç çıkarmadan önce o pencereyi kapat ve yenisini aç.
 
@@ -45,7 +45,7 @@ Installer Ollama'yı kullanıcı PATH'ine ekliyor ama o sırada zaten açık ola
 
 [podman-desktop.io](https://podman-desktop.io) üzerinden indir. Bir kez aç; ilk açılış ekranı Podman'ın kendisini kurmayı öneriyor — kabul et. macOS ve Windows'ta container'lar bu adımın oluşturduğu küçük bir Linux VM'inin içinde çalışıyor ve o VM'i oluşturmak da kendi başına bir indirme; evde yapılmasının sebebi bu.
 
-*Gerçek bir Amadeus Windows laptopunda henüz doğrulamadık: Podman Desktop yönetici hakkı olmadan kuruluyor mu.* Windows'ta WSL 2 gerektiriyor ve WSL 2'yi açmak çoğunlukla yönetici isteyen bir adım. Seni engelliyorsa günden önce söyle — makinesi yeşil olan biriyle eşleşirsin.
+*Yönetilen bir kurumsal Windows laptopunda henüz doğrulamadık: Podman Desktop yönetici hakkı olmadan kuruluyor mu.* Windows'ta WSL 2 gerektiriyor ve WSL 2'yi açmak çoğunlukla yönetici isteyen bir adım. Seni engelliyorsa günden önce söyle — makinesi yeşil olan biriyle eşleşirsin.
 
 Elinde zaten Docker Desktop ve çalışan bir `docker compose` var mı? O da çalışıyor, tek bir farkla; [Evde clone'la ve build et](#evde-clonela-ve-build-et) bölümünde yazıyor.
 
@@ -73,21 +73,21 @@ Aynı hat hızı iki container image'ı için de geçerli: `chromadb/chroma:1.5.
 **Terminal (herhangi bir yerde — repo kökü buradan çıkıyor):**
 
 ```bash
-git clone https://github.com/kuthaygumus/amadeus-rag-lab.git
-cd amadeus-rag-lab
+git clone https://github.com/kuthaygumus/kg-rag-lab.git
+cd kg-rag-lab
 podman pull docker.io/chromadb/chroma:1.5.9
 podman compose up --build
 ```
 
 O `cd` repo kökü. Bu sitede *repo kökü* yazan her yer bu klasörü kastediyor.
 
-**Ne görmen gerekiyor.** İki container ayağa kalkıyor: önce 8000 portunda `chroma` — compose, ikinciyi başlatmadan önce onun healthcheck'ini, `/api/v2/heartbeat`'i bekliyor — sonra 3000 portunda `api`; son log satırları `amadeus-rag-lab listening on http://localhost:3000` ve `start with GET /health`. İlk `up --build` build artı image pull için yaklaşık bir dakika sürüyor; sonraki her `up` saniyeler.
+**Ne görmen gerekiyor.** İki container ayağa kalkıyor: önce 8000 portunda `chroma` — compose, ikinciyi başlatmadan önce onun healthcheck'ini, `/api/v2/heartbeat`'i bekliyor — sonra 3000 portunda `api`; son log satırları `kg-rag-lab listening on http://localhost:3000` ve `start with GET /health`. İlk `up --build` build artı image pull için yaklaşık bir dakika sürüyor; sonraki her `up` saniyeler.
 
 Ollama bir container **değil**. Makinende kalıyor, GPU'nun olduğu ve modelleri az önce indirdiğin yerde; api ona `http://host.containers.internal:11434` üzerinden ulaşıyor. Docker altında değişen tek satır da bu: `OLLAMA_URL=http://host.docker.internal:11434 docker compose up --build`.
 
 Bir sonraki bölüm için çalışır bırak — `up` ön planda kalıyor ve iki container'ın loglarını akıtıyor. Health isteği yeşil olduğunda `Ctrl+C` onu durduruyor; sonra container'ları temiz kapat:
 
-**Terminal (`amadeus-rag-lab` repo kökü):**
+**Terminal (`kg-rag-lab` repo kökü):**
 
 ```bash
 podman compose down
@@ -95,11 +95,11 @@ podman compose down
 
 `down` container'ları siliyor; image'ları ve `chroma-data` volume'unu tutuyor. Bu akşam `-v` ekleme; o volume'u siler ve bu akşam içinde bir şey olmasa da eğitim günü olacak.
 
-**git yok mu?** [ZIP'i indir](https://github.com/kuthaygumus/amadeus-rag-lab/archive/refs/heads/main.zip), çıkart ve çıkardığın klasöre `cd` yap. Sonrası birebir aynı.
+**git yok mu?** [ZIP'i indir](https://github.com/kuthaygumus/kg-rag-lab/archive/refs/heads/main.zip), çıkart ve çıkardığın klasöre `cd` yap. Sonrası birebir aynı.
 
 ## Ne çalıştırıyorsun
 
-Tek istek. Bruno'yu aç → *Open Collection* → clone'ladığın reponun **içindeki** `bruno/amadeus-rag-lab` klasörünü seç — repo kökünü değil, `bruno/`'yu değil. Sağ üstteki environment seçicisinden `local`'i seç; `baseUrl`'i `http://localhost:3000` yapıyor, başka hiçbir şey yapmıyor. Sonra:
+Tek istek. Bruno'yu aç → *Open Collection* → clone'ladığın reponun **içindeki** `bruno/kg-rag-lab` klasörünü seç — repo kökünü değil, `bruno/`'yu değil. Sağ üstteki environment seçicisinden `local`'i seç; `baseUrl`'i `http://localhost:3000` yapıyor, başka hiçbir şey yapmıyor. Sonra:
 
 **Bruno — `00-health` › `health`**
 
@@ -122,11 +122,11 @@ Body yok. Oka bas.
 | `chroma` | `unreachable at http://chroma:8000 — is the chroma container running?` | Podman Desktop'a bak: `chroma` yeşil değilse repo kökünde `podman compose down`, sonra `podman compose up`. |
 | Bruno: connection refused | — | api hiç ayakta değil. Terminalde `podman compose up` çalışıyor mu? Environment `local` seçili mi? |
 
-**Windows ve `OLLAMA_HOST`.** Windows'ta Ollama yalnızca `127.0.0.1`'i dinliyor olabilir ve Podman VM'i oraya ulaşamaz — terminalinde `ollama list` çalışırken container `unreachable` der. Belgelenen çözüm: kullanıcı ortam değişkeni `OLLAMA_HOST=0.0.0.0` (Settings → System → Environment variables, kullanıcı kapsamı, yönetici gerekmiyor), sonra Ollama'yı tepsiden kapatıp yeniden aç. *Gerçek bir Amadeus Windows laptopunda henüz doğrulamadık.* Buna evde çarparsan evde düzelt; 09:10'da çarparsan eşleşirsin.
+**Windows ve `OLLAMA_HOST`.** Windows'ta Ollama yalnızca `127.0.0.1`'i dinliyor olabilir ve Podman VM'i oraya ulaşamaz — terminalinde `ollama list` çalışırken container `unreachable` der. Belgelenen çözüm: kullanıcı ortam değişkeni `OLLAMA_HOST=0.0.0.0` (Settings → System → Environment variables, kullanıcı kapsamı, yönetici gerekmiyor), sonra Ollama'yı tepsiden kapatıp yeniden aç. *Yönetilen bir kurumsal Windows laptopunda henüz doğrulamadık.* Buna evde çarparsan evde düzelt; 09:10'da çarparsan eşleşirsin.
 
 ## Eğitim sabahı
 
-**Terminal (`amadeus-rag-lab` repo kökü):**
+**Terminal (`kg-rag-lab` repo kökü):**
 
 ```bash
 podman compose up          # --build yok: imajlar zaten makinende

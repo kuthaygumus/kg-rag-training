@@ -66,7 +66,7 @@ duyuyor ve o adım modül 5'te zaten koştu.
 
 ## Yüzey 2 — Terminal
 
-**Terminal (`amadeus-rag-lab` repo kökü):**
+**Terminal (`kg-rag-lab` repo kökü):**
 
 ```bash
 podman ps
@@ -146,7 +146,7 @@ dosyada değil, Chroma'da değil. Api'yi restart et, bir sonraki `/retrieve` **`
 been ingested yet. Call POST /ingest first (Bruno folder 02).` döndürür. Veri hâlâ volume'da; ona
 işaret eden pointer gitti. İki yarıyı tek hamlede kanıtla:
 
-**Terminal (`amadeus-rag-lab` repo kökü):**
+**Terminal (`kg-rag-lab` repo kökü):**
 
 ```bash
 podman compose restart api
@@ -161,7 +161,7 @@ pointer'ı geri getirir — 409 mesajının özür dilemek yerine Bruno klasör 
 
 - **Podman Desktop** — Containers görünümü: iki çalışan, `chroma` healthy işaretli, Ollama yok.
   Volumes: `chroma-data`.
-- **Terminal (`amadeus-rag-lab` repo kökü)** — `podman ps`, `curl localhost:8000/api/v2/heartbeat`,
+- **Terminal (`kg-rag-lab` repo kökü)** — `podman ps`, `curl localhost:8000/api/v2/heartbeat`,
   `podman compose logs chroma`. İsteğe bağlı: 409 için `podman compose restart api`.
 - **Bruno — `02-ingest` › `peek-chunks`** — `GET /chunks?source=fare_classic_shorthaul&limit=20`.
   `collection`, `total`, `returned`'ı oku; sonra `chunks[].text` içinde `| K |` ile başlığı ara.

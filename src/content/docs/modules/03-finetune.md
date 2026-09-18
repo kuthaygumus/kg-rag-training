@@ -76,7 +76,7 @@ Nothing on your laptop. This module has one surface and it is the trainer's.
 **Projector (trainer)** — the training listing, run in Colab before the day (the one GPU step of the course):
 
 ```text
-https://colab.research.google.com/github/kuthaygumus/amadeus-rag-training/blob/main/notebooks/02_finetune_qwen_lora.ipynb
+https://colab.research.google.com/github/kuthaygumus/kg-rag-training/blob/main/notebooks/02_finetune_qwen_lora.ipynb
 ```
 
 - **what the room should see** — the `LoraConfig` cell, then the `print_trainable_parameters()` line ending in `2.34%`, then the loss log; scroll, do not re-run

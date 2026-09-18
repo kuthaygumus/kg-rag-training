@@ -20,9 +20,9 @@ Eski sayılar burada tek bir sebeple, sadece kutuların içinde duruyor: her tek
 <div class="measured">
 
 **Bu sayfadaki her sayı hakkında.** Bu kursun önceki Python sürümünden geliyorlar (Eylül 2026,
-`eval/RESULTS.md`), şimdi reponun git geçmişinde — `amadeus-rag-training` deposunun `07c13ba`
+`eval/RESULTS.md`), şimdi reponun git geçmişinde — `kg-rag-training` deposunun `07c13ba`
 commit'i. Farklı bir chat modeliyle, farklı bir chunker konfigürasyonuyla (lab'ın 132'si değil, 154
-structure-aware chunk) ve lab'da artık bulunmayan puanlama koduyla üretildiler. **`amadeus-rag-lab`
+structure-aware chunk) ve lab'da artık bulunmayan puanlama koduyla üretildiler. **`kg-rag-lab`
 ile yeniden üretilemezler**; rakamları için değil, yönleri için alıntılanıyorlar. Yirmi soru iki
 tasarım arasında karar verir; 0.05 civarının altındaki bir fark gürültüdür.
 
@@ -255,7 +255,7 @@ decomposition'ın bedelini hiç ödemesin.
 ## Eski sayıları nereden okursun
 
 Tam tablolar — tür kırılımıyla chunking merdiveni, üç embedder, iki granülaritede BM25 ve fusion, dört
-kurulumlu rerank taraması — `amadeus-rag-training` deposunun git geçmişinde, `07c13ba` commit'indeki
+kurulumlu rerank taraması — `kg-rag-training` deposunun git geçmişinde, `07c13ba` commit'indeki
 `eval/RESULTS.md`'de; onları üreten notebook'larla birlikte. Onları önceki kursun, önceki kursun
 kurulumunu ölçmesi olarak oku. Lab'ın kendi sayıları eğitmen tarafındaki `npm run eval`,
-`amadeus-rag-lab/eval/results.md` içinde — laptop'ındakini anlatan sayılar yalnızca onlar.
+`kg-rag-lab/eval/results.md` içinde — laptop'ındakini anlatan sayılar yalnızca onlar.

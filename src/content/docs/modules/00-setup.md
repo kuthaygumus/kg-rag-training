@@ -7,10 +7,10 @@ Three programs, two models, one `git clone`. At the end, a single request in Bru
 
 ## Where every command on this site goes
 
-Read this section once and nothing later in the day is a guess. There are exactly **three surfaces**, and the folder you are about to clone — `amadeus-rag-lab`, the one that contains `compose.yaml`, `bruno/`, `corpus/` and `src/` — is the anchor of all three.
+Read this section once and nothing later in the day is a guess. There are exactly **three surfaces**, and the folder you are about to clone — `kg-rag-lab`, the one that contains `compose.yaml`, `bruno/`, `corpus/` and `src/` — is the anchor of all three.
 
 1. **Bruno.** The request collection you click through. Each module names a folder and a request — **Bruno — `01-bare-llm` › `ask-about-kraken`** — and you select it in the left pane and press the arrow. Every request has a *Docs* tab that says what to read in the response.
-2. **Terminal, at the repository root.** One terminal window, `cd`'d into `amadeus-rag-lab`, left open for the day. Every `ollama …`, `podman compose …` and `curl …` on this site runs here.
+2. **Terminal, at the repository root.** One terminal window, `cd`'d into `kg-rag-lab`, left open for the day. Every `ollama …`, `podman compose …` and `curl …` on this site runs here.
 3. **Podman Desktop.** The window that shows the two containers, their logs and their state. You look at it more than you click it.
 
 Every fenced command on every page of this site says in bold which surface it belongs to, immediately above the fence, so you never have to work it out.
@@ -37,7 +37,7 @@ ollama --version
 
 **Windows, without administrator rights.** `OllamaSetup.exe` is a per-user installer: binaries under `%LOCALAPPDATA%\Programs\Ollama`, no elevation, server starts with your session.
 
-*We have not yet confirmed the per-user install on a managed Amadeus Windows laptop.* If it asks for administrator credentials, stop — send a message the evening before and you will be paired with someone whose machine is green, rather than arguing with IT at 09:00 on the day.
+*We have not yet confirmed the per-user install on a managed corporate Windows laptop.* If it asks for administrator credentials, stop — send a message the evening before and you will be paired with someone whose machine is green, rather than arguing with IT at 09:00 on the day.
 
 It adds Ollama to your user PATH, and a terminal that was already open does not pick that up. If `ollama --version` says the command is not recognised, close that window and open a new one before concluding anything.
 
@@ -45,7 +45,7 @@ It adds Ollama to your user PATH, and a terminal that was already open does not 
 
 Download from [podman-desktop.io](https://podman-desktop.io). Launch it once; the first-run screen offers to set up Podman itself — accept. On macOS and Windows the containers run inside a small Linux VM that this step creates, and creating it is a download of its own, which is why it belongs at home.
 
-*Not yet confirmed on a managed Amadeus Windows laptop: whether Podman Desktop installs without administrator rights.* On Windows it needs WSL 2, and enabling WSL 2 is often an elevated step. If it blocks you, say so before the day — you will pair with someone whose machine is green.
+*Not yet confirmed on a managed corporate Windows laptop: whether Podman Desktop installs without administrator rights.* On Windows it needs WSL 2, and enabling WSL 2 is often an elevated step. If it blocks you, say so before the day — you will pair with someone whose machine is green.
 
 Already have Docker Desktop and a working `docker compose`? It works too, with one change, noted under [Clone and build at home](#clone-and-build-at-home).
 
@@ -73,21 +73,21 @@ The same link speed applies to the two container images: `chromadb/chroma:1.5.9`
 **Terminal (anywhere — this is where the repository root comes from):**
 
 ```bash
-git clone https://github.com/kuthaygumus/amadeus-rag-lab.git
-cd amadeus-rag-lab
+git clone https://github.com/kuthaygumus/kg-rag-lab.git
+cd kg-rag-lab
 podman pull docker.io/chromadb/chroma:1.5.9
 podman compose up --build
 ```
 
 That `cd` is the repository root. Everywhere this site says *repo root*, it means this folder.
 
-**What you should see.** Two containers come up: `chroma` on port 8000 first — compose waits for its healthcheck, `/api/v2/heartbeat`, before starting the second — then `api` on port 3000, whose last log lines read `amadeus-rag-lab listening on http://localhost:3000` and `start with GET /health`. The first `up --build` takes about a minute for the build plus the image pull; every later `up` takes seconds.
+**What you should see.** Two containers come up: `chroma` on port 8000 first — compose waits for its healthcheck, `/api/v2/heartbeat`, before starting the second — then `api` on port 3000, whose last log lines read `kg-rag-lab listening on http://localhost:3000` and `start with GET /health`. The first `up --build` takes about a minute for the build plus the image pull; every later `up` takes seconds.
 
 Ollama is **not** a container. It stays on your machine, where the GPU is and where you just pulled the models; the api reaches it at `http://host.containers.internal:11434`. That is also the one line that changes under Docker: `OLLAMA_URL=http://host.docker.internal:11434 docker compose up --build`.
 
 Leave it running for the next section — `up` stays in the foreground and streams both containers' logs. When the health request is green, `Ctrl+C` stops it, then take the containers down cleanly:
 
-**Terminal (repo root of `amadeus-rag-lab`):**
+**Terminal (repo root of `kg-rag-lab`):**
 
 ```bash
 podman compose down
@@ -95,11 +95,11 @@ podman compose down
 
 `down` removes the containers and keeps both the images and the `chroma-data` volume. Do not add `-v` tonight; that wipes the volume, and while tonight there is nothing in it, on the day there will be.
 
-**No git?** Download [the ZIP](https://github.com/kuthaygumus/amadeus-rag-lab/archive/refs/heads/main.zip), extract it, and `cd` into the extracted folder. Everything after that is identical.
+**No git?** Download [the ZIP](https://github.com/kuthaygumus/kg-rag-lab/archive/refs/heads/main.zip), extract it, and `cd` into the extracted folder. Everything after that is identical.
 
 ## What you run
 
-One request. Open Bruno → *Open Collection* → pick the `bruno/amadeus-rag-lab` folder **inside** the cloned repository — not the repository root, not `bruno/`. In the top-right environment selector choose `local`; it sets `baseUrl` to `http://localhost:3000` and nothing else. Then:
+One request. Open Bruno → *Open Collection* → pick the `bruno/kg-rag-lab` folder **inside** the cloned repository — not the repository root, not `bruno/`. In the top-right environment selector choose `local`; it sets `baseUrl` to `http://localhost:3000` and nothing else. Then:
 
 **Bruno — `00-health` › `health`**
 
@@ -122,11 +122,11 @@ No body. Press the arrow.
 | `chroma` | `unreachable at http://chroma:8000 — is the chroma container running?` | Look at Podman Desktop: if `chroma` is not green, `podman compose down` then `podman compose up` at the repo root. |
 | Bruno: connection refused | — | The api is not up at all. Is `podman compose up` running in the terminal? Is the environment `local` selected? |
 
-**Windows and `OLLAMA_HOST`.** On Windows, Ollama may listen only on `127.0.0.1`, which the Podman VM cannot reach — `ollama list` works in your terminal while the container reports `unreachable`. The documented fix: set the user environment variable `OLLAMA_HOST=0.0.0.0` (Settings → System → Environment variables, user scope, no admin needed), then quit and restart Ollama from the tray. *Not yet confirmed on a managed Amadeus Windows laptop.* If you hit this at home, fix it at home; if you hit it at 09:10, you pair.
+**Windows and `OLLAMA_HOST`.** On Windows, Ollama may listen only on `127.0.0.1`, which the Podman VM cannot reach — `ollama list` works in your terminal while the container reports `unreachable`. The documented fix: set the user environment variable `OLLAMA_HOST=0.0.0.0` (Settings → System → Environment variables, user scope, no admin needed), then quit and restart Ollama from the tray. *Not yet confirmed on a managed corporate Windows laptop.* If you hit this at home, fix it at home; if you hit it at 09:10, you pair.
 
 ## On the morning of the training
 
-**Terminal (repo root of `amadeus-rag-lab`):**
+**Terminal (repo root of `kg-rag-lab`):**
 
 ```bash
 podman compose up          # no --build: the images are already on your machine

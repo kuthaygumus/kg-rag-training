@@ -21,9 +21,9 @@ technique needs, and that is the part that transfers to your system. The digits 
 
 **About every number on this page.** They come from the earlier Python version of this course
 (September 2026, `eval/RESULTS.md`), now in the repository's git history — commit `07c13ba` of
-`amadeus-rag-training`. They were produced with a different chat model, a different chunker
+`kg-rag-training`. They were produced with a different chat model, a different chunker
 configuration (154 structure-aware chunks, not the lab's 132) and scoring code that no longer exists
-in the lab. **They are not reproducible with `amadeus-rag-lab`** and are quoted for their direction,
+in the lab. **They are not reproducible with `kg-rag-lab`** and are quoted for their direction,
 not their digit. Twenty questions decides between two designs; a difference under about 0.05 is noise.
 
 </div>
@@ -258,7 +258,7 @@ pay for decomposition.
 
 The full tables — the chunking ladder with its per-type breakdown, three embedders, BM25 and fusion
 at both granularities, the four-setup rerank sweep — are in `eval/RESULTS.md` at commit `07c13ba` of
-the `amadeus-rag-training` repository's git history, alongside the notebooks that produced them.
+the `kg-rag-training` repository's git history, alongside the notebooks that produced them.
 Read them as the earlier course's measurement of the earlier course's setup. The lab's own numbers
-are the trainer-side `npm run eval` in `amadeus-rag-lab/eval/results.md`, and those are the only
+are the trainer-side `npm run eval` in `kg-rag-lab/eval/results.md`, and those are the only
 ones that describe what is on your laptop.

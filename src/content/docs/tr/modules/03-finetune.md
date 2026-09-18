@@ -76,7 +76,7 @@ Laptopunda hiçbir şey. Bu modülün tek bir yüzeyi var ve o da eğitmenin.
 **Projektör (eğitmen)** — training listesi, günden önce Colab'da koşulmuş hali (kursun tek GPU adımı):
 
 ```text
-https://colab.research.google.com/github/kuthaygumus/amadeus-rag-training/blob/main/notebooks/02_finetune_qwen_lora.ipynb
+https://colab.research.google.com/github/kuthaygumus/kg-rag-training/blob/main/notebooks/02_finetune_qwen_lora.ipynb
 ```
 
 - **odanın ne görmesi gerekiyor** — `LoraConfig` hücresi, ardından `2.34%` ile biten `print_trainable_parameters()` satırı, ardından loss logu; kaydır, yeniden koşturma

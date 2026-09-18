@@ -18,7 +18,7 @@ dakika tutuyor — cevabı tek bir tablonun tek bir satırı olan bir soru için
 yeniden yayımlanıyor. Her çeyrek yeniden eğitemezsin, her soruda bütün kitabın parasını da ödeyemezsin.
 
 O yüzden seçeceğiz. Yirmi sekiz doküman yerine üç parça göndereceğiz. RAG bu — retrieval-augmented
-generation — ve tamamı `amadeus-rag-lab` içinde `src/pipeline.ts` dosyasındaki iki fonksiyon:
+generation — ve tamamı `kg-rag-lab` içinde `src/pipeline.ts` dosyasındaki iki fonksiyon:
 `ingest` ve `retrieve`. Her aşama süre ölçüyor ve o süre response body'sinde geri geliyor, yani
 **bir RAG pipeline'ının ne yaptığını slayttan değil, bir HTTP response'undan okuyacaksın.**
 

@@ -31,7 +31,7 @@ Bruno'ya dokunmadan önce oylama iste: "ne bozuk — model mi, embedder mı, ba�
 
 ## Kesmenin üç yolu, en ucuzundan başlayarak
 
-Üçü de `amadeus-rag-lab` içindeki `src/chunking.ts` dosyasında duruyor; `/ingest` birini adıyla
+Üçü de `kg-rag-lab` içindeki `src/chunking.ts` dosyasında duruyor; `/ingest` birini adıyla
 seçiyor.
 
 **`fixed`** — her N karakterde kes, içinde ne olduğuna bakma. Default 280.
@@ -162,7 +162,7 @@ gerekir.
 
 <div class="measured">
 
-Yalnızca trainer tarafı — `amadeus-rag-lab` repo'sunda `npm run eval`; katılımcıların
+Yalnızca trainer tarafı — `kg-rag-lab` repo'sunda `npm run eval`; katılımcıların
 çalıştırdığı bir şey değil. 20 gold soru, edisyon 2026-Q3, embedder `bge-m3`, **doküman**
 seviyesinde skorlanıyor (bir dokümanın en iyi chunk'ı o doküman için isabet sayılır). M-series
 Mac'te birer koşum, 12 Eylül 2026; sayılar başka makinelerde kayar.

@@ -12,7 +12,7 @@ Both are deterministic: the same input produces byte-identical output, so a rege
 shows up in a diff means the input moved, not the script. Python 3.10+, standard library only.
 
 After a corpus change, copy `corpus/` verbatim into the lab repository
-(`amadeus-rag-lab/corpus/`) — the lab bakes it into its image.
+(`kg-rag-lab/corpus/`) — the lab bakes it into its image.
 
 `build_notebooks.py` regenerates the two `.ipynb` files under `notebooks/` from their percent-format
 `.py` sources — run it after editing a notebook.

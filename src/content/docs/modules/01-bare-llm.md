@@ -26,7 +26,7 @@ Kraken Air is a fictional airline, and its rule book is the `corpus/` folder of 
 
 It comes in **two editions**: `corpus/2026-Q2/` is last quarter's rule book (21 documents) and `corpus/2026-Q3/` is the one in force now (28 — seven were added). Same book, three months apart; `corpus/DELTA.md` lists exactly what changed. The trainer opens the folder on the projector now; you can look in your own clone whenever you like:
 
-**Terminal (repo root of `amadeus-rag-lab`):**
+**Terminal (repo root of `kg-rag-lab`):**
 
 ```bash
 ls corpus/2026-Q3

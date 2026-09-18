@@ -22,4 +22,4 @@ without the site. The few retrieval numbers in it come from the lab's `eval/resu
 (`npm run eval`, trainer-side) — when the corpus or the chunkers move, they move with them.
 
 Kraken Air (XX) and Wyvern Overseas Airways (YY) are fictional; the corpus is synthetic training
-material and no Amadeus system, customer or production data appears anywhere in this repository.
+material and no real airline system, customer or production data appears anywhere in this repository.

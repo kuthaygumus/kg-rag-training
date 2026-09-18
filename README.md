@@ -6,7 +6,7 @@ the participant's machine.
 
 This repository is the **site** — theory, narrative, presenter notes, in English and Turkish. The
 **practical part lives in a second repository,
-[`amadeus-rag-lab`](https://github.com/kuthaygumus/amadeus-rag-lab)**: a small TypeScript/Express
+[`kg-rag-lab`](https://github.com/kuthaygumus/kg-rag-lab)**: a small TypeScript/Express
 service plus ChromaDB in two containers, and a Bruno collection that is the day's handout.
 Participants install Ollama, Podman Desktop and Bruno, clone the lab, `podman compose up`, and
 click through six folders — one gate each.
@@ -61,7 +61,7 @@ the same every run. `notebooks/01_mnist_tiny_net.ipynb` is module 2's demo.
 ## This site
 
 Built with [Astro Starlight](https://starlight.astro.build) and published on Vercel at
-[amadeus-rag-training.vercel.app](https://amadeus-rag-training.vercel.app). Content is maintained in
+[kg-rag-training.vercel.app](https://kg-rag-training.vercel.app). Content is maintained in
 **English and Turkish** with full parity.
 
 ```bash
@@ -105,4 +105,4 @@ MIT — see [LICENSE](./LICENSE).
 
 **Kraken Air (XX) and Wyvern Overseas Airways (YY) are fictional airlines.** Every document, fare
 rule, flight number and procedure in this repository is synthetic and written for teaching.
-**No Amadeus system, customer or production data is used anywhere in this repository.**
+**No real airline system, customer or production data is used anywhere in this repository.**

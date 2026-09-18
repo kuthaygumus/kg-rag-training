@@ -26,7 +26,7 @@ Kraken Air kurgusal bir havayolu; kural kitabı da klonladığın reponun `corpu
 
 **İki edisyonu var:** `corpus/2026-Q2/` geçen çeyreğin kural kitabı (21 doküman), `corpus/2026-Q3/` şu an yürürlükte olan (28 — yedi doküman eklendi). Aynı kitap, üç ay arayla; `corpus/DELTA.md` tam olarak neyin değiştiğini listeliyor. Eğitmen klasörü şimdi projektörde açıyor; sen de kendi klonunda istediğin zaman bakabilirsin:
 
-**Terminal (`amadeus-rag-lab` repo kökü):**
+**Terminal (`kg-rag-lab` repo kökü):**
 
 ```bash
 ls corpus/2026-Q3

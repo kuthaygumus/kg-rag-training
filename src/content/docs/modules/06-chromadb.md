@@ -68,7 +68,7 @@ the embed step needs Ollama, and the embed step already ran in module 5.
 
 ## Surface 2 — Terminal
 
-**Terminal (repo root of `amadeus-rag-lab`):**
+**Terminal (repo root of `kg-rag-lab`):**
 
 ```bash
 podman ps
@@ -150,7 +150,7 @@ a file, not in Chroma. Restart the api and the next `/retrieve` returns **`409`*
 been ingested yet. Call POST /ingest first (Bruno folder 02).` The data is still in the volume; the
 pointer to it is gone. Prove both halves in one move:
 
-**Terminal (repo root of `amadeus-rag-lab`):**
+**Terminal (repo root of `kg-rag-lab`):**
 
 ```bash
 podman compose restart api
@@ -165,7 +165,7 @@ about which one is *current* was. One `/ingest` call brings the pointer back —
 
 - **Podman Desktop** — Containers view: two running, `chroma` marked healthy, no Ollama. Volumes:
   `chroma-data`.
-- **Terminal (repo root of `amadeus-rag-lab`)** — `podman ps`, `curl localhost:8000/api/v2/heartbeat`,
+- **Terminal (repo root of `kg-rag-lab`)** — `podman ps`, `curl localhost:8000/api/v2/heartbeat`,
   `podman compose logs chroma`. Optional: `podman compose restart api` for the 409.
 - **Bruno — `02-ingest` › `peek-chunks`** — `GET /chunks?source=fare_classic_shorthaul&limit=20`.
   Read `collection`, `total`, `returned`, then hunt for `| K |` and the header in `chunks[].text`.

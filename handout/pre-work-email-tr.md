@@ -54,13 +54,13 @@ cevap bu ikisiyle üretildi; model değişirse cevaplar da değişir.
 ## 3. Lab'ı klonlayıp bir kez ayağa kaldırın — 5 dakika + indirme
 
 ```
-git clone https://github.com/kuthaygumus/amadeus-rag-lab
-cd amadeus-rag-lab
+git clone https://github.com/kuthaygumus/kg-rag-lab
+cd kg-rag-lab
 podman compose up --build
 ```
 
 **git yoksa gerek de yok.** Şu ZIP'i indirip çıkarın, sonra çıkardığınız klasöre `cd` yapın:
-https://github.com/kuthaygumus/amadeus-rag-lab/archive/refs/heads/main.zip
+https://github.com/kuthaygumus/kg-rag-lab/archive/refs/heads/main.zip
 
 İlk `podman compose up --build` iki şey yapıyor: ChromaDB imajını indiriyor (~650 MB) ve lab'ın
 api imajını oluşturuyor (bir dakika civarı). İkisi de **bir kere** oluyor; gün içinde tekrar
@@ -73,7 +73,7 @@ Evde yapın; imaj bir kez oluştuğunda ofiste yeniden oluşturulmuyor.`
 
 ## 4. Yeşil ışık — 1 dakika
 
-Bruno'yu açın → **Open Collection** → klonladığınız klasörün içindeki `bruno/amadeus-rag-lab`
+Bruno'yu açın → **Open Collection** → klonladığınız klasörün içindeki `bruno/kg-rag-lab`
 klasörünü seçin → sağ üstten environment olarak **`local`** seçin → soldan **`00-health`** →
 **`health`** isteğini açıp **→ (Send)** deyin.
 
@@ -131,7 +131,7 @@ site size Bruno'da bir klasör ve bir istek adı veriyor; gönderiyorsunuz, ceva
 Repo, container'lar ve Bruno koleksiyonu sizde kalıyor; pazartesi sabahı da, internetsiz, aynı
 laptopta çalışmaya devam ediyor.
 
-Materyal: https://amadeus-rag-training.vercel.app/tr/
+Materyal: https://kg-rag-training.vercel.app/tr/
 
 Görüşmek üzere,
 Kuthay

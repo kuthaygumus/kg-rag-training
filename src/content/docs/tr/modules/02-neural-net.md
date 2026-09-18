@@ -58,7 +58,7 @@ O fark bir kere, döngü bittiğinde yazıldı ve yarın da aynı görünecek. B
 **Projektör (eğitmen):**
 
 ```text
-https://colab.research.google.com/github/kuthaygumus/amadeus-rag-training/blob/main/notebooks/01_mnist_tiny_net.ipynb
+https://colab.research.google.com/github/kuthaygumus/kg-rag-training/blob/main/notebooks/01_mnist_tiny_net.ipynb
 ```
 
 Eğitmen onu Colab'da açıyor — ya da yerelde çalıştırıyor — ve hücre hücre yürüyor. Düz dizi aritmetiği, framework yok, GPU yok; backward pass'in her satırı bir kütüphane çağrısının arkasında değil, hücrenin içinde görünüyor.

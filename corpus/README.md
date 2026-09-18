@@ -1,7 +1,7 @@
 # Corpus
 
 > **Kraken Air (XX) and Wyvern Overseas Airways (YY) are fictional.** Nothing in this folder is
-> real airline data: no Amadeus system, customer or production data is used anywhere. All 49
+> real airline data: no real airline system, customer or production data is used anywhere. All 49
 > documents across the two editions end with the line `Kraken Air is a fictional carrier. This
 > document is synthetic training material.`
 

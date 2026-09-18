@@ -5,7 +5,7 @@ description: "Günde geçen her terim, bir kez tanımlanmış, ölçtüğümüz 
 
 Terimler, onları ilk kullanan modüle göre gruplanmıştır. Bir şeyi ölçtüysek sayısı da burada —
 kontrol edemediğin tanımı yanlış hatırlarsın. Bu sayfadaki her retrieval sayısı **trainer
-tarafında** ölçüldü: `amadeus-rag-lab` içinde `npm run eval` (`eval/results.md`), 12 Eylül 2026'da
+tarafında** ölçüldü: `kg-rag-lab` içinde `npm run eval` (`eval/results.md`), 12 Eylül 2026'da
 M serisi bir Mac'te tek koşu; başka bir makinede bir iki soru kayar. Katılımcılar onu hiç
 çalıştırmıyor. *Daha ileri* diye işaretlenen her şey günün dışında.
 

@@ -118,7 +118,7 @@ const presenterModeScript = `
 `.trim();
 
 export default defineConfig({
-  site: 'https://amadeus-rag-training.vercel.app',
+  site: 'https://kg-rag-training.vercel.app',
   markdown: {
     processor: satteri({ hastPlugins: [excludePresenterNotesFromSearch] }),
   },
@@ -140,7 +140,7 @@ export default defineConfig({
       // The 404 response is served by public/404.html, which covers both locales.
       disable404Route: true,
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/kuthaygumus/amadeus-rag-training' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/kuthaygumus/kg-rag-training' },
       ],
       sidebar: [
         {

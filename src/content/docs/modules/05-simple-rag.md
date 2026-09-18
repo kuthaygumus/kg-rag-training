@@ -18,7 +18,7 @@ laptop, for a question whose answer is one row of one table. The rule book is re
 quarter. You cannot retrain per quarter and you cannot pay for the whole book per question.
 
 So select. Send three pieces instead of twenty-eight documents. That is RAG — retrieval-augmented
-generation — and the whole thing is two functions in `src/pipeline.ts` of `amadeus-rag-lab`:
+generation — and the whole thing is two functions in `src/pipeline.ts` of `kg-rag-lab`:
 `ingest` and `retrieve`. Each stage is timed and the timing goes back in the response body, so
 **you are going to read what a RAG pipeline does off an HTTP response, not off a slide.**
 

@@ -58,7 +58,7 @@ That difference was written once, when the loop ended, and it will look the same
 **Projector (trainer):**
 
 ```text
-https://colab.research.google.com/github/kuthaygumus/amadeus-rag-training/blob/main/notebooks/01_mnist_tiny_net.ipynb
+https://colab.research.google.com/github/kuthaygumus/kg-rag-training/blob/main/notebooks/01_mnist_tiny_net.ipynb
 ```
 
 The trainer opens it in Colab — or runs it locally — and walks it cell by cell. Plain array arithmetic, no framework, no GPU, so every line of the backward pass is visible in the cell instead of hidden behind a library call.

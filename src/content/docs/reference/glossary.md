@@ -5,7 +5,7 @@ description: "Every term the day uses, defined once, with the measured number at
 
 Terms are grouped by the module that introduces them. Where we measured something, the number is
 here too — a definition you cannot check is a definition you will misremember. Every retrieval
-figure on this page is **trainer-side**: `npm run eval` in `amadeus-rag-lab` (`eval/results.md`),
+figure on this page is **trainer-side**: `npm run eval` in `kg-rag-lab` (`eval/results.md`),
 one run on 12 Sep 2026 on an M-series Mac, and it drifts by a question or two on another machine.
 Participants never run it. Anything marked *Going further* is beyond the day.
 
